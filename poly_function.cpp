@@ -1,6 +1,33 @@
-#include "poly_function.h"
 #include <cmath>
+#include <vector>
+#include "poly_function.h"
 
+std::vector<double> poly_re(double a, double b, double x1, double x2, double y1, double y2) {
+	std::vector<double> ret(7);
+
+	ret[0] = poly_0_re(a, b, x1, x2, y1, y2);	
+	ret[1] = poly_1_re(a, b, x1, x2, y1, y2);	
+	ret[2] = poly_2_re(a, b, x1, x2, y1, y2);	
+	ret[3] = poly_3_re(a, b, x1, x2, y1, y2);	
+	ret[4] = poly_4_re(a, b, x1, x2, y1, y2);	
+	ret[5] = poly_5_re(a, b, x1, x2, y1, y2);	
+	ret[6] = poly_6_re(a, b, x1, x2, y1, y2);
+	return ret;
+}
+
+std::vector<double> poly_im(double a, double b, double x1, double x2, double y1, double y2) {
+	std::vector<double> ret(7);
+
+	ret[0] = poly_0_im(a, b, x1, x2, y1, y2);	
+	ret[1] = poly_1_im(a, b, x1, x2, y1, y2);	
+	ret[2] = poly_2_im(a, b, x1, x2, y1, y2);	
+	ret[3] = poly_3_im(a, b, x1, x2, y1, y2);	
+	ret[4] = poly_4_im(a, b, x1, x2, y1, y2);	
+	ret[5] = poly_5_im(a, b, x1, x2, y1, y2);	
+	ret[6] = poly_6_im(a, b, x1, x2, y1, y2);
+
+	return ret;
+}
 
 double poly_6_re(double a, double b, double x1, double x2, double y1, double y2) {
    double poly_6_re_result;
@@ -44,10 +71,8 @@ double poly_3_re(double a, double b, double x1, double x2, double y1, double y2)
    return poly_3_re_result;
 }
 
-double poly_3_im() {
-   double poly_3_im_result;
-   poly_3_im_result = 0;
-   return poly_3_im_result;
+double poly_3_im(double a, double b, double x1, double x2, double y1, double y2) {
+   return 0;
 }
 
 double poly_2_re(double a, double b, double x1, double x2, double y1, double y2) {

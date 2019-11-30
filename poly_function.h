@@ -1,6 +1,11 @@
 #ifndef POLY_FUNCTION_H
 #define POLY_FUNCTION_H
 
+#include <vector>
+
+std::vector<double> poly_re(double a, double b, double x1, double x2, double y1, double y2);
+std::vector<double> poly_im(double a, double b, double x1, double x2, double y1, double y2);
+
 double poly_6_re(double a, double b, double x1, double x2, double y1, double y2);
 double poly_6_im(double a, double b, double x1, double x2, double y1, double y2);
 double poly_5_re(double a, double b, double x1, double x2, double y1, double y2);

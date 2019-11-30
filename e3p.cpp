@@ -3,6 +3,7 @@
 #include <cmath>
 #include <vector>
 #include "eig.h"
+#include "poly_function.h"
 
 using namespace std;
 
@@ -19,11 +20,24 @@ int main() {
 
 	int ok = eig(A, w);
 
-	printf("%d\n", ok);
+//	printf("%d\n", ok);
 
-	printf("%f %f\n", w[0].re, w[0].im);
-	printf("%f %f\n", w[1].re, w[1].im);
+//printf("%f %f\n", w[0].re, w[0].im);
+//	printf("%f %f\n", w[1].re, w[1].im);
 	
+
+	vector<double> p_re = poly_re(2, 1, 1, 2, 3, 4);
+	vector<double> p_im = poly_im(2, 1, 1, 2, 3, 4);
+
+	for (int j = 0; j<p_re.size(); j++)
+		cout << p_re[j] << endl;
+
+	cout << "-----" << endl;
+
+	for (int j = 0; j<p_re.size(); j++)
+		cout << p_im[j] << endl;
+
+
 
 
 	return 0;
