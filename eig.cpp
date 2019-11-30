@@ -1,12 +1,11 @@
 #include <cmath>
 #include <iostream>
+#include <complex>
 #include "eig.h"
 
 using namespace std;
 
-//struct complex {double re; double im;};   
-
-//typedef struct complex complex;
+typedef struct ccomplex {double re; double im;} ccomplex; 
 
 // dgeev_ is a symbol in the LAPACK library files
 extern "C" {
@@ -16,29 +15,29 @@ extern int zgeev_(
 		int*,
 		double*,
 		int*,
-		complex*, 
-		complex**, 
+		ccomplex*, 
+		ccomplex**, 
 		int*, 
-		complex**,
+		ccomplex**,
 		int*, 
-		complex*, 
+		ccomplex*, 
 		int*, 
-		complex*,
+		ccomplex*,
 		int*);
 }
 
-int eig(vector<vector<complex>> &mat, vector<complex> &eig_values) {
+int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_values) {
 
 	int size = mat.size();
 
-	complex *WORK, *RWORK, *w, *vl[1], *vr[1];
+	ccomplex *WORK, *RWORK, *w, *vl[1], *vr[1];
 	double AT[2 * size * size];
 
-	vl[0] = new complex[size];
-	vr[0] = new complex[size];
-	w = new complex[size];
-	WORK = new complex[size * 2];
-	RWORK = new complex[size * 2];
+	vl[0] = new ccomplex[size];
+	vr[0] = new ccomplex[size];
+	w = new ccomplex[size];
+	WORK = new ccomplex[size * 2];
+	RWORK = new ccomplex[size * 2];
 
 	char jobvl = 'N';
 	char jobvr = 'N';
@@ -51,26 +50,22 @@ int eig(vector<vector<complex>> &mat, vector<complex> &eig_values) {
 	lda=size;
 	ldvl=1;
 	ldvr=1;
-	lwork=6;
+	lwork=size * 2;
 
 
 	for (int i=0; i<size; i++)
 		for(int j=0; j<size; j++)
 		{
-			AT[2*(j+size*i)]=mat[j][i].re;
-			AT[2*(j+size*i)+1]=mat[j][i].im;
+			AT[2*(j+size*i)]=real(mat[j][i]);
+			AT[2*(j+size*i)+1]=imag(mat[j][i]);
 		}
 	
-	zgeev_(&jobvl, &jobvr,&n, AT, &lda, w, vl, &ldvl, vr, &ldvr, WORK, &lwork, 
-  RWORK, &ok);
+	zgeev_(&jobvl, &jobvr,&n, AT, &lda, w, vl, &ldvl, vr, &ldvr, WORK, &lwork, RWORK, &ok);
 
 	if (ok == 0) 
 	{
 		for (int i = 0; i < size; i++) 
-		{
-			eig_values[i] = w[i];
-			//printf("%f %f\n", eig_values[i].re, eig_values[i].im);
-		}
+			eig_values[i] = complex<double>(w[i].re, w[i].im);
 	}
 
 #ifdef DEBUG
