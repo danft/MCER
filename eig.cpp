@@ -53,12 +53,18 @@ int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_value
 	lwork=size * 2;
 
 
-	for (int i=0; i<size; i++)
+	for (int i=0; i<size; i++) 
+	{
 		for(int j=0; j<size; j++)
 		{
+			cout << mat[i][j] << " ";
 			AT[2*(j+size*i)]=real(mat[j][i]);
 			AT[2*(j+size*i)+1]=imag(mat[j][i]);
 		}
+
+		cout << endl;
+	}
+
 	
 	zgeev_(&jobvl, &jobvr,&n, AT, &lda, w, vl, &ldvl, vr, &ldvr, WORK, &lwork, RWORK, &ok);
 

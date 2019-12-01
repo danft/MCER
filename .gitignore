@@ -2,6 +2,7 @@
 *.d
 
 main
+mcer
 
 # Compiled Object files
 *.slo
