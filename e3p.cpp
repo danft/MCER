@@ -49,12 +49,6 @@ vector<complex<double>> e3p_get_polynomial(double a, double b, double x1, double
 	return pol;
 }
 
-vector<complex<double>> e3p_get_roots(double a, double b, double x1, double x2, double y1, double y2) {
-	auto pol = e3p_get_polynomial(a, b, x1, x2, y1, y2);	
-
-	return roots(pol);
-}
-
 vector<pair<double, Point>> e3p(double a, double b, double x0, double x1, double x2, double y0, double y1, double y2) {
 	vector<pair<double, Point>> ret = e3p(a, b, x1-x0, x2-x0, y1-y0, y2-y0);
 
@@ -84,7 +78,7 @@ vector<pair<double, Point>> e3p(double a, double b, double x1, double x2, double
 
 	auto pcoef = e3p_get_polynomial(a, b, x1, x2, y1, y2);
 
-	auto roots = e3p_get_roots(a, b, x1, x2, y1, y2);
+	auto roots = roots(pcoef);
 
 	vector<pair<double, Point>> ret;
 
