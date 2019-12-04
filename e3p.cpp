@@ -4,47 +4,42 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <complex>
+
+#include "roots.h"
 #include "e3p.h"
 #include "eig.h"
 #include "poly_function.h"
 
 using namespace std;
 
-void print_complex(double re, double im) {
-	cout << re;
-	if (im > 0)
-		cout << '+';
-	cout << im << 'i';
+Point tr(double theta, double q, double x, double y) {
+	return Point(
+			q * (x * cos(theta) + y * sin(theta)),
+			-x * sin(theta) + y * cos(theta));
 }
 
-complex<double> poly_eval(vector<complex<double>> pol, complex<double> z) {
-	complex<double> ret = 0;
-	auto zpot = complex<double>(1, 0);
-
-	for (int j = 0; j< pol.size(); j++) {
-		ret += pol[j] * zpot;
-		zpot *= z;
-	}
-	
-	return ret;
+Point tri(double theta, double q, double x, double y) {
+	x /= q;
+	return Point(
+			x * cos(-theta) + y * sin(-theta),
+			-x * sin(-theta) + y * cos(-theta));
 }
 
-/*test*/
-int test() {
 
-	auto angles = e3p(2, 1, 1, 1.1, -1.3, 3);
+Point get_center_from_angle(double theta, double a, double b, double x1, double x2, double y1, double y2) {
+	Point P1 = tr(theta, b/a, x1, y1);
+	Point P2 = tr(theta, b/a, x2, y2);
 
-	for (auto a : angles){
-		cout << a << endl;
-	}
+	Point center = get_circumcenter(P1.x, P2.x, P1.y, P2.y);
 
-	return 0;
+	return tri(theta, b/a, center.x, center.y); 
 }
 
 vector<complex<double>> e3p_get_polynomial(double a, double b, double x1, double x2, double y1, double y2) {
 
 	vector<double> p_re = poly_re(a, b, x1, x2, y1, y2);
-	vector<double> p_im = poly_re(a, b, x1, x2, y1, y2);
+	vector<double> p_im = poly_im(a, b, x1, x2, y1, y2);
 
 	vector<complex<double>> pol;
 
@@ -55,54 +50,52 @@ vector<complex<double>> e3p_get_polynomial(double a, double b, double x1, double
 }
 
 vector<complex<double>> e3p_get_roots(double a, double b, double x1, double x2, double y1, double y2) {
-
 	auto pol = e3p_get_polynomial(a, b, x1, x2, y1, y2);	
 
-	auto comp_matrix = vector<vector<complex<double>>>(6, vector<complex<double>>(6, complex<double>(0,0)));
-
-	for (int i = 0; i<5; i++)
-		comp_matrix[i][i+1] = complex<double>(1, 0);
-
-	int n = 6;
-
-	reverse(pol.begin(), pol.end());
-
-	while (n >= 0 && abs(pol[n]) < 1e-15) 
-		n--;
-
-	for (int i = 0; i<n; i++) 
-		comp_matrix[5][i] = -pol[i] / pol[n];
-
-	auto eig_values = vector<complex<double>>(n);
-	eig(comp_matrix, eig_values);
-
-	return eig_values;
+	return roots(pol);
 }
 
-bool is_colinear(double x1, double x2, double y1, double y2) {
-	return abs(x1 * y2 - x2 * y1) < 1e-15;
-}
+vector<pair<double, Point>> e3p(double a, double b, double x0, double x1, double x2, double y0, double y1, double y2) {
+	vector<pair<double, Point>> ret = e3p(a, b, x1-x0, x2-x0, y1-y0, y2-y0);
 
-vector<double> e3p(double a, double b, double x0, double x1, double x2, double y0, double y1, double y2) {
-	return e3p(a, b, x1-x0, x2-x0, y1-y0, y2-y0);
+	for (int j = 0; j<ret.size(); j++) 
+	{
+		ret[j].second.x += x0;
+		ret[j].second.y += y0;
+	}
+
+	return ret;
 }	
 
-vector<double> e3p(double a, double b, double x1, double x2, double y1, double y2) {
+vector<pair<double, Point>> e3p(double a, double b, double x1, double x2, double y1, double y2) {
 	if (is_colinear(x1, x2, y1, y2))
 	{
-		return vector<double>();
+		return vector<pair<double, Point>>();
 	}
+
+	// Circle case
+	if (abs(a - b) < 1e-15)
+	{
+		Point c = get_circumcenter(x1, x2, y1, y2);
+
+		//return vector<pair<double, Point>>({pair<double, Point>(0, c)});
+		return {pair<double, Point>(0, c)};
+	}
+
+	auto pcoef = e3p_get_polynomial(a, b, x1, x2, y1, y2);
 
 	auto roots = e3p_get_roots(a, b, x1, x2, y1, y2);
 
-	vector<double> ret;
+	vector<pair<double, Point>> ret;
 
-	for (auto r : roots) 
-	{
-		//cout << r << "  ----- " << abs(1-abs(r)) << endl;
-		if (abs(abs(r) - 1) < 1e-1)
-			ret.push_back(arg(r));
-	}
+	for (auto r : roots)
+		if (abs(abs(r) - 1) < 1e-13)
+		{
+			/*The polynomial is reduced using y=x^2*/
+			double theta = arg(r)/2;
+			Point cntr = get_center_from_angle(theta, a, b, x1, x2, y1, y2);
+			ret.push_back(pair<double, Point>(theta, cntr));
+		}
 
 	return ret;
 }

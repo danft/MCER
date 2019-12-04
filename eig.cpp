@@ -28,9 +28,11 @@ extern int zgeev_(
 
 int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_values) {
 
-	int size = mat.size();
-
 	ccomplex *WORK, *RWORK, *w, *vl[1], *vr[1];
+	char jobvl = 'N';
+	char jobvr = 'N';
+	int ok, n, lda, ldvl, ldvr, lwork;
+	int size = mat.size();
 	double AT[2 * size * size];
 
 	vl[0] = new ccomplex[size];
@@ -38,12 +40,6 @@ int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_value
 	w = new ccomplex[size];
 	WORK = new ccomplex[size * 2];
 	RWORK = new ccomplex[size * 2];
-
-	char jobvl = 'N';
-	char jobvr = 'N';
-	int ok, n, lda, ldvl, ldvr, lwork;
-
-
 	n=size;
 	jobvl='N';
 	jobvr='N';
@@ -52,20 +48,13 @@ int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_value
 	ldvr=1;
 	lwork=size * 2;
 
-
 	for (int i=0; i<size; i++) 
-	{
 		for(int j=0; j<size; j++)
 		{
-			cout << mat[i][j] << " ";
 			AT[2*(j+size*i)]=real(mat[j][i]);
 			AT[2*(j+size*i)+1]=imag(mat[j][i]);
 		}
 
-		cout << endl;
-	}
-
-	
 	zgeev_(&jobvl, &jobvr,&n, AT, &lda, w, vl, &ldvl, vr, &ldvr, WORK, &lwork, RWORK, &ok);
 
 	if (ok == 0) 
@@ -73,13 +62,6 @@ int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_value
 		for (int i = 0; i < size; i++) 
 			eig_values[i] = complex<double>(w[i].re, w[i].im);
 	}
-
-#ifdef DEBUG
-	for (int i = 0;i < 3; i++) {
-		printf("%f %f\n", w[i].re, w[i].im);
-	}
-#endif
-
 
 	delete[] vl[0];
 	delete[] vr[0];

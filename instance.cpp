@@ -2,8 +2,34 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <cmath>
 
 using namespace std;
+
+double todouble(string num) {
+	double ret = 0, ax, bx;
+
+	int epos = num.find('e');
+
+	string a = num.substr(0, epos);
+	string b = num.substr(epos+1, num.size() - epos - 1);
+
+	if (epos == string::npos)
+		b = "";
+
+	stringstream astream = stringstream(a);
+	stringstream bstream = stringstream(b);
+
+	astream >> ax;
+	
+	if (b.size() > 0)
+		bstream >> bx;
+	else
+		bx = 0;
+
+	return ax * pow(10, bx);
+}
 
 Instance read_instance_from_file(char const*  filename) {
 	ifstream infile;
@@ -23,11 +49,18 @@ Instance read_instance_from_file(char const*  filename) {
 	ret.b = vector<double>(ret.m);
 	ret.wel = vector<double>(ret.m);
 
-	for (int i = 0; i<ret.m; i++)
-		infile >> ret.a[i] >> ret.b[i];
+	for (int i = 0; i<ret.m; i++) {
+		string a, b;
+		infile >> a >> b;
+		ret.a[i] = todouble(a);
+		ret.b[i] = todouble(b);
+	}
 
-	for (int i = 0; i<ret.m; i++)
-		infile >> ret.wel[i] >> ret.wel[i];
+	for (int i = 0; i<ret.m; i++) {
+		string wel;
+		infile >> wel;
+		ret.wel[i] = todouble(wel);
+	}
 
 	infile >> ret.n;
 
@@ -35,11 +68,18 @@ Instance read_instance_from_file(char const*  filename) {
 	ret.Y = vector<double>(ret.n);
 	ret.wpnt = vector<double>(ret.n);
 
-	for (int i = 0; i<ret.n; i++)
-		infile >> ret.X[i] >> ret.Y[i];
+	for (int i = 0; i<ret.n; i++) {
+		string X, Y;
+		infile >> X >> Y;
+		ret.X[i] = todouble(X);
+		ret.Y[i] = todouble(Y);
+	}
 
-	for (int i = 0; i<ret.n; i++)
-		infile >> ret.wpnt[i];
+	for (int i = 0; i<ret.n; i++) {
+		string wpnt;
+		infile >> wpnt;
+		ret.wpnt[i] = todouble(wpnt);
+	}
 
 	infile.close();
 
