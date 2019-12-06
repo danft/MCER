@@ -5,6 +5,6 @@
 
 using namespace std;
 
-vector<complex<double>> roots(vector<complex<double>> pol);
+vector<complex<double>> roots(vector<complex<double>> &pol);
 
 #endif

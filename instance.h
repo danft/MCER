@@ -2,6 +2,7 @@
 #define INSTANCE_H
 
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -14,7 +15,8 @@ struct Instance {
 	}
 };
 
-Instance read_instance_from_file(char const *filename);
+//Instance read_instance_from_file(char const *filename);
+Instance read_instance_from_file(istream &infile);
 
 
 #endif

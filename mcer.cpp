@@ -197,6 +197,8 @@ struct MCER {
 
 		cout << "Time in Phase 2: " << 1.0 * (t4-t3) / CLOCKS_PER_SEC << endl;
 
+		cout << "Number of solutions attempted: " << cntsols << endl; 
+
 		cout << best_sol_v << "\n";
 
 
@@ -274,11 +276,12 @@ struct MCER {
 
 int main() {
 	
-	string filename;
-	cin >> filename;
-	filename = "instances/" + filename + ".txt";
+	//string filename;
+	//cin >> filename;
+	//filename = "instances/" + filename + ".txt";
 
-	auto instance = read_instance_from_file(filename.c_str());
+	//auto instance = read_instance_from_file(filename.c_str());
+	auto instance = read_instance_from_file(cin);
 
 	MCER mcer = MCER(instance);
 

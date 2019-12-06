@@ -6,7 +6,7 @@
 
 using namespace std;
 
-vector<complex<double>> roots(vector<complex<double>> pol) {
+vector<complex<double>> roots(vector<complex<double>> &pol) {
 
 	int n = 6;
 	auto comp_matrix = vector<vector<complex<double>>>(n, vector<complex<double>>(n, complex<double>(0,0)));

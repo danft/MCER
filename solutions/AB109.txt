@@ -1,0 +1,10 @@
+Time in Phase 1: 58.5189
+Ell(i): 178
+Ell(i): 102
+Ell(i): 83
+Time in Phase 2: 2.2e-05
+Number of solutions attempted: 74
+18
+-0.945228 10.8328 13.5978: 9
+-0.982929 44.1434 6.03533: 6
+0 27.7216 33.067: 3

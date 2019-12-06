@@ -76,13 +76,13 @@ vector<pair<double, Point>> e3p(double a, double b, double x1, double x2, double
 		return {pair<double, Point>(0, c)};
 	}
 
-	auto pcoef = e3p_get_polynomial(a, b, x1, x2, y1, y2);
+	vector<complex<double>> pcoef = e3p_get_polynomial(a, b, x1, x2, y1, y2);
 
-	auto roots = roots(pcoef);
+	vector<complex<double>> pol_roots = roots(pcoef);
 
 	vector<pair<double, Point>> ret;
 
-	for (auto r : roots)
+	for (auto r : pol_roots)
 		if (abs(abs(r) - 1) < 1e-13)
 		{
 			/*The polynomial is reduced using y=x^2*/

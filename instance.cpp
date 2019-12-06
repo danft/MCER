@@ -31,9 +31,10 @@ double todouble(string num) {
 	return ax * pow(10, bx);
 }
 
-Instance read_instance_from_file(char const*  filename) {
-	ifstream infile;
-	infile.open(filename);
+//Instance read_instance_from_file(char const*  filename) {
+Instance read_instance_from_file(istream &infile) {
+	//ifstream infile;
+	//infile.open(filename);
 
 	if (!infile) 
 	{
@@ -81,7 +82,7 @@ Instance read_instance_from_file(char const*  filename) {
 		ret.wpnt[i] = todouble(wpnt);
 	}
 
-	infile.close();
+	//infile.close();
 
 	return ret;
 }
