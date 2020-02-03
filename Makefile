@@ -13,6 +13,9 @@ instance.o: instance.h instance.cpp
 e2p.o: e2p.h e2p.cpp
 	$(CC) -c e2p.cpp -o e2p.o $(CXXFLAGS)
 
+e3p_test: e3p_test.cpp e3p.o
+	$(CC) e3p_test.cpp e3p.o eig.o roots.o poly_function.o utils.o -o e3p_test $(CXXFLAGS)
+
 e3p.o: roots.o utils.o poly_function.o eig.o e3p.h e3p.cpp
 	$(CC) -c e3p.cpp -o e3p.o $(CXXFLAGS)
 
