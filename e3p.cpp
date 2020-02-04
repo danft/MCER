@@ -82,14 +82,24 @@ vector<pair<double, Point>> e3p(double a, double b, double x1, double x2, double
 
 	vector<pair<double, Point>> ret;
 
-	for (auto r : pol_roots)
-		if (abs(abs(r) - 1) < 1e-13)
+	for (auto r : pol_roots) 
+	{
+		if (abs(abs(r) - 1) < 1e-7)
 		{
 			/*The polynomial is reduced using y=x^2*/
 			double theta = arg(r)/2;
+
+			bool has_seen = false;
+
+			for (auto s : ret) 
+				has_seen |= (abs(theta - s.first) < 1e-7);
+			
+			if (has_seen) continue;
+
 			Point cntr = get_center_from_angle(theta, a, b, x1, x2, y1, y2);
 			ret.push_back(pair<double, Point>(theta, cntr));
 		}
+	}
 
 	return ret;
 }

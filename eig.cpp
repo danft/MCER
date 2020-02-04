@@ -59,8 +59,12 @@ int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_value
 
 	if (ok == 0) 
 	{
-		for (int i = 0; i < size; i++) 
+		//cout << endl;
+		///cout << "ROOTS:\n";
+		for (int i = 0; i < size; i++) {
 			eig_values[i] = complex<double>(w[i].re, w[i].im);
+			//cout << w[i].re << ' ' << w[i].im << "j\n";
+		}
 	}
 
 	delete[] vl[0];
