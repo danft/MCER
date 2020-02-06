@@ -16,6 +16,8 @@ struct Point{
 	Point(){}
 };
 
+double todouble(string num);
+double eval_ellipse(double a, double b, double theta, double xc, double yc, double x, double y);
 bool is_colinear(double x1, double x2, double y1, double y2);
 void print_complex(double re, double im);
 complex<double> poly_eval(vector<complex<double>> pol, complex<double> z);

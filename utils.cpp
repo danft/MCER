@@ -6,6 +6,41 @@
 
 using namespace std;
 
+double todouble(string num) {
+	double ret = 0, ax, bx;
+
+	int epos = num.find('e');
+
+	string a = num.substr(0, epos);
+	string b = num.substr(epos+1, num.size() - epos - 1);
+
+	if (epos == string::npos)
+		b = "";
+
+	stringstream astream = stringstream(a);
+	stringstream bstream = stringstream(b);
+
+	astream >> ax;
+	
+	if (b.size() > 0)
+		bstream >> bx;
+	else
+		bx = 0;
+
+	return ax * pow(10, bx);
+}
+
+double eval_ellipse(double a, double b, double theta, double xc, double yc, double x, double y) {
+	double X = xc-x, Y = yc-y;
+	double Aa = (X * cos(theta) + Y * sin(theta)) / a;
+	double Bb = (X * sin(theta) - Y * cos(theta)) / b;
+
+	return Aa*Aa + Bb*Bb;
+	//return pow(X * cos(theta) + Y * sin(theta), 2)/pow(a, 2) + pow(X * sin(theta) - Y * cos(theta), 2)/pow(b, 2);
+}
+
+
+
 bool is_colinear(double x1, double x2, double y1, double y2) {
 	return abs(x1 * y2 - x2 * y1) < 1e-15;
 }

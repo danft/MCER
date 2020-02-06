@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ struct Instance {
 	vector<double> X, Y;
 	int n, m, k;
 
+	string to_string();
 	Instance() {
 	}
 };

@@ -1,14 +1,21 @@
 CC=g++
 CXXFLAGS=-llapack -O2 
+MCER_DEPS=subset_tree.o instance.o cover.o e2p.o e3p.o roots.o utils.o eig.o poly_function.o solver_wrapper.o
 
-mcer: mcer.cpp e3p.o e2p.o roots.o instance.o eig.o poly_function.o subset_tree.o utils.o
-	$(CC) mcer.cpp subset_tree.o instance.o e2p.o roots.o e3p.o eig.o poly_function.o utils.o -o mcer $(CXXFLAGS)
+mcer: mcer.cpp $(MCER_DEPS)
+	$(CC) mcer.cpp $(MCER_DEPS) -o mcer $(CXXFLAGS)
 
 subset_tree.o: subset_tree.h subset_tree.cpp
 	$(CC) -c subset_tree.cpp -o subset_tree.o $(CXXFLAGS)
 
 instance.o: instance.h instance.cpp
 	$(CC) -c instance.cpp -o instance.o $(CXXFLAGS)
+
+solver_wrapper.o: solver_wrapper.h solver_wrapper.cpp
+	$(CC) -c solver_wrapper.cpp -o solver_wrapper.o $(CXXFLAGS)
+
+cover.o: cover.h cover.cpp
+	$(CC) -c cover.cpp -o cover.o $(CXXFLAGS)
 
 e2p.o: e2p.h e2p.cpp
 	$(CC) -c e2p.cpp -o e2p.o $(CXXFLAGS)

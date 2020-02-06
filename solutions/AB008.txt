@@ -1,14 +1,34 @@
-Time in Phase 1: 0.097733
+Instance: n=10, m=5, k=1
+a = [9, 7, 5, 3, 1]
+b = [5, 4, 3, 2, 1]
+wel = [4.5, 2.8, 1.5, 0.6, 0.1]
+X = [10.49, 43.14, 22.83, 33.49, 7.6, 37.5, 25.87, 16.32, 28.37, 20.09]
+Y = [36.86, 18.54, 37.22, 36.73, 11.82, 33.5, 28.26, 30.74, 44.66, 3.19]
+wpnt = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+Solution: 
+Time in Phase 1: 0.091748
 Ell(i): 12
 Ell(i): 12
 Ell(i): 10
 Ell(i): 9
 Ell(i): 10
-Time in Phase 2: 1.2e-05
+Time in Phase 2: 1e-05
 Number of solutions attempted: 2
-9
-0.0291651 16.7661 33.4028: 3
-0.355364 30.8166 32.2625: 3
-0.930745 26.4989 40.2707: 2
-0 43.14 18.54: 1
-0 7.6 11.82: 1
+Maximum Cover has value:9
+
+0-th ellipse solution 
+Weight: 3 (xc, yc, theta) -> (16.7661, 33.4028, 0.0291651)
+
+1-th ellipse solution 
+Weight: 3 (xc, yc, theta) -> (30.8166, 32.2625, 0.355364)
+
+2-th ellipse solution 
+Weight: 2 (xc, yc, theta) -> (26.4989, 40.2707, 0.930745)
+
+3-th ellipse solution 
+Weight: 1 (xc, yc, theta) -> (43.14, 18.54, 0)
+
+4-th ellipse solution 
+Weight: 1 (xc, yc, theta) -> (7.6, 11.82, 0)
+

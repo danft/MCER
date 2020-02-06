@@ -7,61 +7,20 @@
 #include <bitset>
 #include <set>
 #include <ctime>
+#include <iomanip>
+#include <limits>
+
+typedef std::numeric_limits<double> dbl;
 
 #include "e3p.h"
 #include "e2p.h"
 #include "instance.h"
 #include "subset_tree.h"
+#include "cover.h"
+#include "isolver.h"
+#include "solver_wrapper.h"
 
 using namespace std;
-
-struct Cover {
-	double w;
-	bitset<100> mask;
-	vector<int> covl;
-
-	double theta, xc, yc;
-
-	Cover() {
-		w = 0;
-		mask = bitset<100>(0);
-		covl = vector<int>();
-	}
-
-	void operator=(const Cover &cov) {
-		mask = cov.mask;
-		w = cov.w;
-		theta = cov.theta;
-		xc = cov.xc;
-		yc = cov.yc;
-		covl = cov.covl;
-	}
-};
-
-double eval_ellipse(double a, double b, double theta, double xc, double yc, double x, double y) {
-	double X = xc-x, Y = yc-y;
-
-	return pow(X * cos(theta) + Y * sin(theta), 2)/pow(a, 2) + pow(X * sin(theta) - Y * cos(theta), 2)/pow(b, 2);
-}
-
-Cover get_cover(Instance &ins, int ej, double theta, double xc, double yc) {
-	
-	Cover ret = Cover();
-	ret.xc = xc;
-	ret.yc = yc;
-	ret.theta = theta;
-
-	for (int i = 0; i<ins.n; i++) 
-		if (eval_ellipse(ins.a[ej], ins.b[ej], theta, xc, yc, ins.X[i], ins.Y[i]) -1e-9 < 1)
-		{
-			ret.mask.set(i);
-			ret.w += ins.wpnt[i];
-			ret.covl.push_back(i);
-		}
-
-	return ret;
-}
-
 
 vector<vector<Cover>> MCER1(Instance instance) {
 
@@ -75,7 +34,7 @@ vector<vector<Cover>> MCER1(Instance instance) {
 		vector<Cover> c_tmp;
 
 		for (int i = 0; i<instance.n; i++) {
-			Cover cov = get_cover(instance, l, 0, instance.X[i], instance.Y[i]);
+			Cover cov = Cover(instance, l, 0, instance.X[i], instance.Y[i]);
 
 			if (!tree.has(cov.covl)) {
 				c_tmp.push_back(cov);
@@ -87,7 +46,7 @@ vector<vector<Cover>> MCER1(Instance instance) {
 				vector<pair<double, Point>> sols = e2p(a, b, instance.X[i], instance.X[j], instance.Y[i], instance.Y[j]);
 
 				for (int h = 0; h<sols.size(); h++) {
-					cov = get_cover(instance, l, sols[h].first, sols[h].second.x, sols[h].second.y);
+					cov = Cover(instance, l, sols[h].first, sols[h].second.x, sols[h].second.y);
 
 					if (!tree.has(cov.covl))
 					{
@@ -101,7 +60,7 @@ vector<vector<Cover>> MCER1(Instance instance) {
 					sols = e3p(a, b, instance.X[i], instance.X[j], instance.X[k], instance.Y[i], instance.Y[j], instance.Y[k]);
 
 					for (int h = 0; h < sols.size(); h++) {
-						cov = get_cover(instance, l, sols[h].first, sols[h].second.x, sols[h].second.y);
+						cov = Cover(instance, l, sols[h].first, sols[h].second.x, sols[h].second.y);
 
 						if (!tree.has(cov.covl))
 						{
@@ -134,7 +93,7 @@ vector<vector<Cover>> MCER1(Instance instance) {
 	return covs;
 }
 
-struct MCER {
+struct MCER : ISolver {
 	
 	/*Each list is sorted descending by its weight.*/
 	vector<vector<Cover>> covers;
@@ -166,7 +125,7 @@ struct MCER {
 	/*Tells if a state has been visited already*/
 	vector<set<bitset<100>>> seen;
 	
-	MCER(Instance ins) : instance(ins) {
+	MCER(Instance ins) : instance(ins){
 		curr = vector<int>(instance.m);
 		best_sol = vector<int>(instance.m);
 		wacc = vector<double>(instance.m+1, 0);
@@ -175,6 +134,9 @@ struct MCER {
 	}
 
 	void solve() {
+
+		cout << "Solution: \n";
+		
 		t1 = clock();
 
 		covers = MCER1(instance);
@@ -199,14 +161,32 @@ struct MCER {
 
 		cout << "Number of solutions attempted: " << cntsols << endl; 
 
-		cout << best_sol_v << "\n";
+		cout << "Maximum Cover has value:" << best_sol_v << "\n";
+		cout << endl;
 
+		cout.precision(dbl::max_digits10 + 4);
 
 		for (int i = 0; i<instance.m; i++) {
 			int j = best_sol[i];
 
-			cout << covers[i][j].theta << " " << covers[i][j].xc << " " << covers[i][j].yc << ": " << covers[i][j].w << endl;
+			cout << i << "-th ellipse solution \n";
+			cout << "Weight: " << covers[i][j].w <<" (xc, yc, theta) -> ";
+
+			cout << "(" << covers[i][j].xc << ", " << covers[i][j].yc << ", " << covers[i][j].theta << ")" << endl;
+			cout << endl;
 		}
+
+		string elp[] = {", ", "]\n"};
+		cout << endl;
+		cout << "sol=[";
+
+		for (int i = 0; i<instance.m; i++) 
+		{
+			int j = best_sol[i];
+			cout <<fixed<< "(" << covers[i][j].xc << ", " << covers[i][j].yc << ", " << covers[i][j].theta << ")" << elp[i==instance.m-1];
+		}
+		cout << endl;
+		
 	}
 
 	double apply_cover(int el, int jcov, int mul=1) {
@@ -285,7 +265,9 @@ int main() {
 
 	MCER mcer = MCER(instance);
 
-	mcer.solve();
+	//mcer.solve();
+
+	solve(mcer, instance);
 
 	return 0;
 }

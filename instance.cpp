@@ -1,34 +1,51 @@
 #include "instance.h"
+#include "utils.h"
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <sstream>
 
 using namespace std;
 
-double todouble(string num) {
-	double ret = 0, ax, bx;
+string Instance::to_string() {
 
-	int epos = num.find('e');
+ 	ostringstream ss;	
 
-	string a = num.substr(0, epos);
-	string b = num.substr(epos+1, num.size() - epos - 1);
+	ss << "Instance: n=" << n << ", m=" << m << ", k=" << k << endl;
 
-	if (epos == string::npos)
-		b = "";
+	string elp[] = {", ", "]\n"};
 
-	stringstream astream = stringstream(a);
-	stringstream bstream = stringstream(b);
+	ss << "a = [";
 
-	astream >> ax;
-	
-	if (b.size() > 0)
-		bstream >> bx;
-	else
-		bx = 0;
+	for (int i = 0; i<m; i++)
+		ss << a[i] << elp[i+1==m];
 
-	return ax * pow(10, bx);
+	ss << "b = [";
+	for (int i = 0; i<m; i++) 
+		ss << b[i] << elp[i+1==m];
+
+	ss << "wel = [";
+	for (int i = 0; i<m; i++) 
+		ss << wel[i] << elp[i+1==m];
+
+	ss << "X = [";
+
+	for (int i = 0; i<X.size(); i++)
+		ss << X[i] << elp[i+1==n];
+
+	ss << "Y = [";
+	for (int i = 0; i<Y.size(); i++) 
+		ss << Y[i] << elp[i+1==n];
+
+	ss << "wpnt = [";
+	for (int i = 0; i<Y.size(); i++) 
+		ss << wpnt[i] << elp[i+1==n];
+
+	ss << endl;
+
+	return ss.str();
 }
 
 //Instance read_instance_from_file(char const*  filename) {
