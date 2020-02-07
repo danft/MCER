@@ -1,15 +1,23 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H
 
+#include <vector>
+#include "cover.h"
+
+using namespace std;
+
 struct Solution {
 	Instance instance;
 	vector<int> cov_cnt;
-	vector<Cover> cov;
-	clock_t t1 = 0, t2 = 0, t3 = 0, t4 = 0;
+	vector<int> best_cov;
+	vector<vector<Cover>> covers;
+	vector<clock_t> time_ellapsed;
+	int sols_att;
+	double sol_val;
 
-	string to_string();
-
-	Solution(vector<cover> &cov, vector<int> &cov_cnt): cov(cov), cov_cnt(cov_cnt) {}
+	string info();
+	Solution(Instance ins, vector<vector<Cover>> cov, vector<int> best_cov, vector<int> cov_cnt, vector<clock_t> tell, int sols_att, double sol_val);
+	Solution();
 };
 
 #endif

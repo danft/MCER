@@ -9,7 +9,7 @@
 
 using namespace std;
 
-string Instance::to_string() {
+string Instance::info() {
 
  	ostringstream ss;	
 

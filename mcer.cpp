@@ -133,10 +133,10 @@ struct MCER : ISolver {
 		cov_cnt = vector<int>(instance.n, 0);
 	}
 
-	void solve() {
+	Solution solve() {
 
-		cout << "Solution: \n";
-		
+		vector<clock_t> times;
+
 		t1 = clock();
 
 		covers = MCER1(instance);
@@ -144,49 +144,15 @@ struct MCER : ISolver {
 		for (int i = 0; i<instance.m; i++)
 			wacc[i+1] = wacc[i] + covers[i][0].w;
 
-		t2 = clock();
-
-		cout << "Time in Phase 1: " << 1.0 * (t2-t1) / CLOCKS_PER_SEC << endl;
-
-		for (int i = 0; i<instance.m; i++)
-			cout << "Ell(i): " << covers[i].size() << endl;
+		times.push_back(clock()-t1);
 
 		t3 = clock();
 
 		_f(0, bitset<100>(0), 0);
 
-		t4 = clock();
+		times.push_back(clock()-t3);
 
-		cout << "Time in Phase 2: " << 1.0 * (t4-t3) / CLOCKS_PER_SEC << endl;
-
-		cout << "Number of solutions attempted: " << cntsols << endl; 
-
-		cout << "Maximum Cover has value:" << best_sol_v << "\n";
-		cout << endl;
-
-		cout.precision(dbl::max_digits10 + 4);
-
-		for (int i = 0; i<instance.m; i++) {
-			int j = best_sol[i];
-
-			cout << i << "-th ellipse solution \n";
-			cout << "Weight: " << covers[i][j].w <<" (xc, yc, theta) -> ";
-
-			cout << "(" << covers[i][j].xc << ", " << covers[i][j].yc << ", " << covers[i][j].theta << ")" << endl;
-			cout << endl;
-		}
-
-		string elp[] = {", ", "]\n"};
-		cout << endl;
-		cout << "sol=[";
-
-		for (int i = 0; i<instance.m; i++) 
-		{
-			int j = best_sol[i];
-			cout <<fixed<< "(" << covers[i][j].xc << ", " << covers[i][j].yc << ", " << covers[i][j].theta << ")" << elp[i==instance.m-1];
-		}
-		cout << endl;
-		
+		return Solution(instance, covers, best_sol, cov_cnt, times, cntsols, best_sol_v);
 	}
 
 	double apply_cover(int el, int jcov, int mul=1) {
@@ -256,16 +222,9 @@ struct MCER : ISolver {
 
 int main() {
 	
-	//string filename;
-	//cin >> filename;
-	//filename = "instances/" + filename + ".txt";
-
-	//auto instance = read_instance_from_file(filename.c_str());
 	auto instance = read_instance_from_file(cin);
 
 	MCER mcer = MCER(instance);
-
-	//mcer.solve();
 
 	solve(mcer, instance);
 
