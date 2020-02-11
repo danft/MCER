@@ -10,20 +10,20 @@ typedef struct ccomplex {double re; double im;} ccomplex;
 // dgeev_ is a symbol in the LAPACK library files
 extern "C" {
 extern int zgeev_(
-		char*,
-		char*,
-		int*,
-		double*,
-		int*,
-		ccomplex*, 
-		ccomplex**, 
-		int*, 
-		ccomplex**,
-		int*, 
-		ccomplex*, 
-		int*, 
-		ccomplex*,
-		int*);
+		char*,			/*JOBVL*/
+		char*,			/*JOBVR*/
+		int*,			/*N*/
+		double*,		/*A*/
+		int*,			/*LDA*/
+		ccomplex*,		/*W*/ 
+		ccomplex**,		/*VL*/
+		int*, 			/*LDVL*/
+		ccomplex**,		/*VR*/
+		int*, 			/*LDVR*/
+		ccomplex*, 		/*WORK*/
+		int*, 			/*LWORK*/
+		ccomplex*,		/*RWORK*/
+		int*);			/*INFO*/
 }
 
 int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_values) {

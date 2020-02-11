@@ -1,5 +1,5 @@
 CC=g++
-CXXFLAGS=-llapack -O2 
+CXXFLAGS=-llapack -O4 
 MCER_DEPS=subset_tree.o instance.o cover.o e2p.o e3p.o roots.o utils.o eig.o poly_function.o solver_wrapper.o solution.o
 
 mcer: mcer.cpp $(MCER_DEPS)
