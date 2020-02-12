@@ -26,12 +26,10 @@ Cover::Cover(const Instance &ins, int ej, double theta, double xc, double yc): C
 }
 
 void Cover::operator=(const Cover &cov) {
-
 	mask = cov.mask;
 	w = cov.w;
 	theta = cov.theta;
 	xc = cov.xc;
 	yc = cov.yc;
 	covl = cov.covl;
-
 }

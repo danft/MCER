@@ -2,22 +2,31 @@
 #define SOLUTION_H
 
 #include <vector>
+#include <set>
 #include "cover.h"
+#include "context.h"
 
 using namespace std;
 
-struct Solution {
+class Solution {
+	public:
+	
+	string info();
+	Solution(Context *context, vector<int> best_sol, vector<clock_t> times, int nsols);
+
+	Solution();
+
+	private:
+	void add_to_cover(const Cover &cov);
 	Instance instance;
-	vector<int> cov_cnt;
-	vector<int> best_cov;
-	vector<vector<Cover>> covers;
+	vector<Cover> opt_cov;
 	vector<clock_t> time_ellapsed;
+	set<int> cov_set;
+	vector<size_t> cls_size;
+
 	int sols_att;
 	double sol_val;
 
-	string info();
-	Solution(Instance ins, vector<vector<Cover>> cov, vector<int> best_cov, vector<int> cov_cnt, vector<clock_t> tell, int sols_att, double sol_val);
-	Solution();
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "isolver.h"
+#include "mcer_base.h"
 #include "solver_wrapper.h"
 #include "solution.h"
 #include "instance.h"
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void solve(ISolver &solver, Instance &ins) {
+void solve(MCER_Base &solver, Instance &ins) {
 	cout << ins.info() << endl;
 
 	Solution sol = solver.solve();
