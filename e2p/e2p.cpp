@@ -1,7 +1,7 @@
 #include <cmath>
 #include <vector>
 
-#include "utils.h"
+#include "../utils.h"
 #include "e2p.h"
 
 using namespace std;

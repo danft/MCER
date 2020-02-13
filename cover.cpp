@@ -2,20 +2,21 @@
 #include "utils.h"
 #include "instance.h"
 
-Cover::Cover() {
+Cover::Cover() : Cover(0, 0, 0){
+}
+
+Cover::Cover(double xc, double yc, double theta) : xc(xc), yc(yc), theta(theta) {
 	w = 0;
 	mask = bitset<100>(0);
 	covl = vector<int>();
 }
 
-Cover::Cover(double theta, double xc, double yc) : xc(xc), yc(yc), theta(theta) {
+Cover::Cover(const Instance &ins, int ej, double xc, double yc, double theta)
+: xc(xc), yc(yc), theta(theta){
+
 	w = 0;
 	mask = bitset<100>(0);
 	covl = vector<int>();
-}
-
-Cover::Cover(const Instance &ins, int ej, double theta, double xc, double yc): Cover(xc, yc, theta){
-
 	for (int i = 0; i<ins.n; i++) 
 		if (eval_ellipse(ins.a[ej], ins.b[ej], theta, xc, yc, ins.X[i], ins.Y[i]) -1e-15 < 1)
 		{

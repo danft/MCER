@@ -1,9 +1,13 @@
-#include "cls_mcer.h"
-#include "subset_tree.h"
-#include "e2p.h"
-#include "e3p.h"
 #include <vector>
 #include <algorithm>
+
+#include "cls_mcer.h"
+#include "subset_tree.h"
+#include "e2p/e2p.h"
+#include "e3p/e3p.h"
+
+
+using namespace std;
 
 vector<vector<Cover>> CLS_MCER(Instance instance) {
 
@@ -17,7 +21,7 @@ vector<vector<Cover>> CLS_MCER(Instance instance) {
 		vector<Cover> c_tmp;
 
 		for (int i = 0; i<instance.n; i++) {
-			Cover cov = Cover(instance, l, 0, instance.X[i], instance.Y[i]);
+			Cover cov = Cover(instance, l, instance.X[i], instance.Y[i], 0);
 
 			if (!tree.has(cov.covl)) {
 				c_tmp.push_back(cov);
@@ -29,7 +33,7 @@ vector<vector<Cover>> CLS_MCER(Instance instance) {
 				vector<pair<double, Point>> sols = e2p(a, b, instance.X[i], instance.X[j], instance.Y[i], instance.Y[j]);
 
 				for (int h = 0; h<sols.size(); h++) {
-					cov = Cover(instance, l, sols[h].first, sols[h].second.x, sols[h].second.y);
+					cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
 					if (!tree.has(cov.covl))
 					{
@@ -43,7 +47,7 @@ vector<vector<Cover>> CLS_MCER(Instance instance) {
 					sols = e3p(a, b, instance.X[i], instance.X[j], instance.X[k], instance.Y[i], instance.Y[j], instance.Y[k]);
 
 					for (int h = 0; h < sols.size(); h++) {
-						cov = Cover(instance, l, sols[h].first, sols[h].second.x, sols[h].second.y);
+						cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
 						if (!tree.has(cov.covl))
 						{

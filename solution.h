@@ -12,7 +12,8 @@ class Solution {
 	public:
 	
 	string info();
-	Solution(Context *context, vector<int> best_sol, vector<clock_t> times, int nsols);
+	Solution(Context *context, vector<int> opt, int nsols);
+	Solution(Context *context, vector<int> opt, int nsols, vector<bool> used);
 
 	Solution();
 
@@ -23,10 +24,10 @@ class Solution {
 	vector<clock_t> time_ellapsed;
 	set<int> cov_set;
 	vector<size_t> cls_size;
+	vector<bool> used;
 
 	int sols_att;
 	double sol_val;
-
 };
 
 #endif

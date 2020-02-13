@@ -12,7 +12,7 @@ using namespace std;
 class Context {
 	public:
 		const Instance *instance;
-		const vector<vector<Cover>> *covers;
+		vector<vector<Cover>> cls_list;
 
 		Context(const Instance *instance, const vector<vector<Cover>> *covers);
 		Context(const Instance *instance);
