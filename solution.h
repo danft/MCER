@@ -12,8 +12,8 @@ class Solution {
 	public:
 	
 	string info();
-	Solution(Context *context, vector<int> opt, int nsols);
-	Solution(Context *context, vector<int> opt, int nsols, vector<bool> used);
+	Solution(Context *context, vector<int> opt, long long nsols);
+	Solution(Context *context, vector<int> opt, long long nsols, vector<bool> used);
 
 	Solution();
 
@@ -26,7 +26,7 @@ class Solution {
 	vector<size_t> cls_size;
 	vector<bool> used;
 
-	int sols_att;
+	long long sols_att;
 	double sol_val;
 };
 

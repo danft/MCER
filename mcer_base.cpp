@@ -9,8 +9,9 @@ using namespace std;
 #include "instance.h"
 
 MCER_Base::MCER_Base(Context *context) : context(context) {
-	cov_cnt = vector<int>(context->instance->m, 0);
+	cov_cnt = vector<int>(context->instance->n, 0);
 	curr = vector<int>(context->instance->m, 0);
+	opt = vector<int>(context->instance->m, 0);
 }
 
 MCER_Base::~MCER_Base(){
@@ -24,8 +25,13 @@ void MCER_Base::create_CLS() {
 	context->times.push_back(clock() - t1);
 }
 
-vector<int> MCER_Base::get_curr() {
-	return curr;
+void MCER_Base::set_opt(){
+	for (int i = 0; i<context->instance->m; i++)
+		opt[i] = curr[i];
+}
+
+vector<int> MCER_Base::get_opt(){
+	return opt;
 }
 
 double MCER_Base::apply_cover(int el, int jcov) {
@@ -34,16 +40,6 @@ double MCER_Base::apply_cover(int el, int jcov) {
 
 bool MCER_Base::covers_any(bitset<100> mask, const Cover &cov) {
 	return !((cov.mask | mask) == mask);
-}
-
-vector<int> MCER_Base::get_covered_list() {
-	vector<int> ret;
-
-	for (int i = 0; i<context->instance->n; i++)
-		if (cov_cnt[i] > 0)
-			ret.push_back(i);
-
-	return ret;
 }
 
 double MCER_Base::apply_cover(int el, int jcov, int mul) {

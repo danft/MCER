@@ -20,7 +20,7 @@ MCERK::MCERK(Context *context) : MCER_Base(context), context(context){
 Solution MCERK::solve() {
 	create_CLS();
 
-	clock_t t1 = clock();
+
 
 	for (int i = 0; i<context->instance->m; i++) {
 		vector<double> w2 = vector<double>(context->instance->m-i, 0);
@@ -37,13 +37,15 @@ Solution MCERK::solve() {
 			wrem[i][j] = wrem[i][j-1] + w2[j-1];
 	}
 
+	clock_t t1 = clock();
+
 	f(0, bitset<100>(), context->instance->k, 0);
 
 	context->times.push_back(clock() - t1);
 
 	return Solution(
 			context,
-			opt,
+			get_opt(),
 			cntsols,
 			used_opt);
 }
@@ -54,7 +56,7 @@ void MCERK::f(int ej, bitset<100> mask, int k, double wcurr) {
 
 		if (wcurr > wopt)
 		{
-			opt = get_curr();
+			set_opt();
 			wopt = wcurr;
 			used_opt = used;
 		}

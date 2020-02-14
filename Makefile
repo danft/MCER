@@ -1,5 +1,6 @@
-CXXFLAGS=-llapack -g 
+CXXFLAGS=-llapack -O4
 obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o
+
 src=$(obj:.o=.cpp)
 
 e3p_obj=e3p.o roots.o eig.o poly_function.o

@@ -8,6 +8,7 @@ using namespace std;
 
 
 int main() {
+	//ifstream in("input/AB020.txt");
 
 	auto instance = read_instance_from_file(cin);
 

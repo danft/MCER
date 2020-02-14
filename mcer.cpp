@@ -27,10 +27,9 @@ using namespace std;
 MCER::MCER(Context *context) : MCER_Base(context), context(context){
 	n = context->instance->n;
 	m = context->instance->m;
-	opt = vector<int>(m);
 	wacc = vector<double>(m+1, 0);
-	seen = vector<set<bitset<100>>>(m);
-	times = vector<clock_t>();
+	//seen = vector<set<bitset<100>>>(m);
+	//times = vector<clock_t>();
 	cntsols = 0;
 }
 
@@ -42,7 +41,7 @@ void MCER::_f(int el, bitset<100> mask, double wcurr) {
 //		cout << "[" << cntsols << "]: " << best_sol_v <<  "time: " << 1.0*(clock()-t3) / CLOCKS_PER_SEC << " s"<< endl;
 
 		if (wcurr > wopt) {
-			opt = get_curr();
+			set_opt();
 			wopt = wcurr;
 		}
 
@@ -77,9 +76,9 @@ Solution MCER::solve() {
 
 	clock_t t1 = clock();
 	_f(0, bitset<100>(0), 0);
-	times.push_back(clock() - t1);
+	context->times.push_back(clock()-t1);
 
-	return Solution(context, opt, cntsols);
+	return Solution(context, get_opt(), cntsols);
 }
 
 

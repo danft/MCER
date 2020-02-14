@@ -17,10 +17,10 @@ class MCERK : public MCER_Base {
 		Context *context;
 		vector<bool> used;
 		vector<bool> used_opt;
-		vector<int> opt;
 		void f(int ej, bitset<100> mask, int k, double wcurr);
 		double wopt;
 		vector<vector<double>> wrem;
+
 		long long cntsols = 0;
 };
 
