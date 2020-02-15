@@ -3,6 +3,8 @@
 
 main
 mcer
+mcerk
+greedy
 
 # Compiled Object files
 *.slo

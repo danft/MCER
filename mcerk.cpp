@@ -28,7 +28,7 @@ Solution MCERK::solve() {
 		const vector<Cover> &cls = context->cls_list[i];
 
 		for (int j = i; j<context->instance->m; j++)
-			w2.push_back(cls[0].w);
+			w2.push_back(cls[0].w - context->instance->wel[j]);
 		sort(w2.rbegin(), w2.rend());
 
 		wrem[i][0] = 0;
@@ -52,6 +52,8 @@ Solution MCERK::solve() {
 
 void MCERK::f(int ej, bitset<100> mask, int k, double wcurr) {
 	if (ej == context->instance->m) {
+		if (k>0) return;
+
 		cntsols++;
 
 		if (wcurr > wopt)
@@ -70,6 +72,8 @@ void MCERK::f(int ej, bitset<100> mask, int k, double wcurr) {
 	f(ej+1, mask, k, wcurr);
 	if (k==0) return;
 	
+	double elcost = context->instance->wel[ej];
+
 	const vector<Cover> &cls = context->cls_list[ej];
 
 	for (int j = 0;j < cls.size(); j++) 
@@ -77,7 +81,7 @@ void MCERK::f(int ej, bitset<100> mask, int k, double wcurr) {
 			used[ej] = true;
 			double w = apply_cover(ej, j);
 
-			f(ej+1, mask | cls[j].mask, k-1, wcurr + w);
+			f(ej+1, mask | cls[j].mask, k-1, wcurr + w - elcost);
 			remove_cover(ej, j);
 		}
 

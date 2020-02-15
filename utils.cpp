@@ -6,6 +6,21 @@
 
 using namespace std;
 
+double Point::dist(const Point &p)const {
+	return sqrt((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y));
+}
+
+double triangle_area(const Point &p1, const Point &p2, const Point &p3){
+	double X1 = p2.x - p1.x;
+	double Y1 = p2.y - p1.y;
+	double X2 = p3.x - p1.x;
+	double Y2 = p3.y - p1.y;
+
+	return abs(X1 * Y2 - X2 * Y1)/2;
+}
+
+
+
 double todouble(string num) {
 	double ret = 0, ax, bx;
 

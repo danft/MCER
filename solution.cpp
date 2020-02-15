@@ -81,6 +81,11 @@ string Solution::info() {
 	ss << endl;
 	
 	string elp[] = {", ", "]\n"};
+	ss << "used=[";
+	for (int i = 0; i<instance.m; i++)
+		ss << used[i] << elp[i+1==instance.m];
+	ss <<endl;
+
 	ss << "sol=[";
 	cnt = 0;
 

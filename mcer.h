@@ -22,8 +22,6 @@ class MCER : public MCER_Base {
 		Context *context;
 
 		vector<double> wacc;
-		//vector<set<bitset<100>>> seen;
-		//vector<clock_t> times;
 		double wopt = 0;
 		long long cntsols;
 		int n, m;

@@ -25,6 +25,10 @@ void MCER_Base::create_CLS() {
 	context->times.push_back(clock() - t1);
 }
 
+bool MCER_Base::is_cov(int i) {
+	return cov_cnt[i] > 0;
+}
+
 void MCER_Base::set_opt(){
 	for (int i = 0; i<context->instance->m; i++)
 		opt[i] = curr[i];

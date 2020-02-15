@@ -1,5 +1,5 @@
 CXXFLAGS=-llapack -O4
-obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o
+obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o greedy.o
 
 src=$(obj:.o=.cpp)
 
@@ -25,7 +25,10 @@ mcer: main_mcer.cpp $(all_obj)
 mcerk: main_mcerk.cpp $(all_obj)
 	$(CXX) main_mcerk.cpp $(all_obj) -o mcerk $(CXXFLAGS)
 
-all: mcer mcerk
+greedy: main_greedy.cpp $(all_obj)
+	$(CXX) main_greedy.cpp $(all_obj) -o greedy $(CXXFLAGS)
+
+all: mcer mcerk greedy
 
 e3p_test: e3p/e3p_test.cpp e3p/$(e3p_obj)
 	$(CC) e3p/e3p_test.cpp e3p/$(e3p_obj) -o e3p/e3p_test $(CXXFLAGS)

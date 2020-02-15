@@ -11,6 +11,8 @@
 #include "eig.h"
 #include "poly_function.h"
 
+#include "../utils.h"
+
 using namespace std;
 
 Point tr(double theta, double q, double x, double y) {
@@ -75,6 +77,8 @@ vector<pair<double, Point>> e3p(double a, double b, double x1, double x2, double
 		//return vector<pair<double, Point>>({pair<double, Point>(0, c)});
 		return {pair<double, Point>(0, c)};
 	}
+
+
 
 	vector<complex<double>> pcoef = e3p_get_polynomial(a, b, x1, x2, y1, y2);
 
