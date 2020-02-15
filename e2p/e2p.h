@@ -7,5 +7,6 @@
 using namespace std;
 
 vector<pair<double, Point>> e2p(double a, double b, double x1, double x2, double y1, double y2);
+vector<pair<double, Point>> e2p(double a, double b, double x1, double x2, double y1, double y2, bool do_rot);
 
 #endif

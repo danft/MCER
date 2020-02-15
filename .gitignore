@@ -5,6 +5,8 @@ main
 mcer
 mcerk
 greedy
+mce
+greedy_mce
 
 # Compiled Object files
 *.slo

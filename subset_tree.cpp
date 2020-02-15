@@ -17,7 +17,7 @@ STree::STree(int n) : n(n) {
 	wh = vector<vector<int>>(n, vector<int>());	
 }
 
-void STree::add_nodes(vector<int> &I) {
+void STree::add_nodes(const vector<int> &I) {
 	int t = root;
 
 	for (int u : I) {
@@ -34,7 +34,7 @@ void STree::add_nodes(vector<int> &I) {
 	}
 }
 
-bool STree::has(vector<int> &I) {
+bool STree::has(const vector<int> &I) {
 	if (I.size() == 0) return true;
 
 	for (int t : wh[I[0]])
@@ -43,7 +43,7 @@ bool STree::has(vector<int> &I) {
 	return false;
 }
 
-bool STree::_has(vector<int> &I, int k, int t) {
+bool STree::_has(const vector<int> &I, int k, int t) {
 	if (k == I.size()) return true;
 
 	for (auto ut : nodes[t].ch) {

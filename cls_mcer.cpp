@@ -27,23 +27,27 @@ bool check2(double a, double b, double x1, double x2, double x3, double y1, doub
 	return area - 1e-9 < acos(-1) * a * b;
 }
 
-vector<vector<Cover>> CLS_MCER(Instance instance) {
+CLS_MCER::CLS_MCER(Instance ins): instance(ins), CLS(ins.n){
+}
+
+vector<vector<Cover>> CLS_MCER::create_cls() {
 
 	auto covs = vector<vector<Cover>>(instance.m);
 	int cnt_e3p = 0;
 	for (int l = 0; l<instance.m; ++l) {
+		reset();
+
 		double a = instance.a[l];
 		double b = instance.b[l];
-		STree tree = STree(instance.n);
 
 		vector<Cover> c_tmp;
 
 		for (int i = 0; i<instance.n; i++) {
 			Cover cov = Cover(instance, l, instance.X[i], instance.Y[i], 0);
 
-			if (!tree.has(cov.covl)) {
+			if (!is_covered(cov.covl)) {
 				c_tmp.push_back(cov);
-				tree.add_nodes(cov.covl);
+				add_cov(cov.covl);
 			}
 
 			for (int j = i+1; j<instance.n; ++j) {
@@ -55,10 +59,9 @@ vector<vector<Cover>> CLS_MCER(Instance instance) {
 				for (int h = 0; h<sols.size(); h++) {
 					cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
-					if (!tree.has(cov.covl))
-					{
+					if (!is_covered(cov.covl)) {
 						c_tmp.push_back(cov);
-						tree.add_nodes(cov.covl);
+						add_cov(cov.covl);
 					}
 				}
 
@@ -73,32 +76,16 @@ vector<vector<Cover>> CLS_MCER(Instance instance) {
 					for (int h = 0; h < sols.size(); h++) {
 						cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
-						if (!tree.has(cov.covl))
-						{
+						if (!is_covered(cov.covl)) {
 							c_tmp.push_back(cov);
-							tree.add_nodes(cov.covl);
+							add_cov(cov.covl);
 						}
 					}
 				}
 			}
 		}
 
-		sort(c_tmp.begin(), c_tmp.end(), [](const Cover &ca, const Cover &cb)->bool {return ca.covl.size() > cb.covl.size();});
-
-		STree tree2 = STree(instance.n);
-
-
-		for (auto c : c_tmp) 
-		{
-			if (!tree2.has(c.covl)) 
-			{
-				//cout << l << ": " << c.covl.size() << endl;
-				tree2.add_nodes(c.covl);
-				covs[l].push_back(c);
-			}
-		}
-
-		sort(covs[l].begin(), covs[l].end(), [](const Cover &ca, const Cover &cb)->bool {return ca.w > cb.w;});
+		covs[l] = remove_duplicates(c_tmp);
 	}
 
 	cout << "Number of times E3P was called: " << cnt_e3p << endl;

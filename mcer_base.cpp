@@ -4,9 +4,10 @@
 
 using namespace std;
 
-#include "cls_mcer.h"
+//#include "cls_mcer.h"
 #include "mcer_base.h"
 #include "instance.h"
+#include "cls.h"
 
 MCER_Base::MCER_Base(Context *context) : context(context) {
 	cov_cnt = vector<int>(context->instance->n, 0);
@@ -18,9 +19,9 @@ MCER_Base::~MCER_Base(){
 
 }
 
-void MCER_Base::create_CLS() {
+void MCER_Base::create_CLS(CLS* cls) {
 	clock_t t1 = clock();
-	auto covers = CLS_MCER(*(context->instance));
+	auto covers = cls->create_cls();
 	context->set_covers(&covers);
 	context->times.push_back(clock() - t1);
 }

@@ -15,16 +15,20 @@ double distsq(vector<double> &X, vector<double> &Y) {
 	return pow(X[0]-X[1], 2) + pow(Y[0]-Y[1], 2);
 }
 
-
 vector<pair<double, Point>> e2p(double a, double b, double x1, double x2, double y1, double y2) {
+	return e2p(a, b, x1, x2, y1, y2, true);
+}
+
+vector<pair<double, Point>> e2p(double a, double b, double x1, double x2, double y1, double y2, bool do_rot) {
 	double theta = 0;
 	auto ret = vector<pair<double, Point>>();
 
-	if (x1 == x2) 
-		theta = pi/2;
-	else 
-		theta = atan((y2-y1)/(x2-x1));
-
+	if (do_rot){
+		if (x1 == x2)
+			theta = pi/2;
+		else
+			theta = atan((y2-y1)/(x2-x1));
+	}
 	vector<double> X = vector<double>({x1, x2});
 	vector<double> Y = vector<double>({y1, y2});
 	for (int i = 0; i<X.size(); i++)
@@ -33,6 +37,7 @@ vector<pair<double, Point>> e2p(double a, double b, double x1, double x2, double
 		X[i] = p.x;
 		Y[i] = p.y;
 	}
+
 
 	double m = (Y[1]-Y[0])/(X[1]-X[0]);
 

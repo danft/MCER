@@ -1,5 +1,5 @@
-CXXFLAGS=-llapack -O4
-obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o greedy.o
+CXXFLAGS=-llapack -g
+obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o greedy.o cls.o cls_mce.o
 
 src=$(obj:.o=.cpp)
 
@@ -25,10 +25,16 @@ mcer: main_mcer.cpp $(all_obj)
 mcerk: main_mcerk.cpp $(all_obj)
 	$(CXX) main_mcerk.cpp $(all_obj) -o mcerk $(CXXFLAGS)
 
+mce: main_mce.cpp $(all_obj)
+	$(CXX) main_mce.cpp $(all_obj) -o mce $(CXXFLAGS)
+
+greedy_mce: main_greedy_mce.cpp $(all_obj)
+	$(CXX) main_greedy_mce.cpp $(all_obj) -o greedy_mce $(CXXFLAGS)
+
 greedy: main_greedy.cpp $(all_obj)
 	$(CXX) main_greedy.cpp $(all_obj) -o greedy $(CXXFLAGS)
 
-all: mcer mcerk greedy
+all: mcer mcerk greedy mce greedy_mce
 
 e3p_test: e3p/e3p_test.cpp e3p/$(e3p_obj)
 	$(CC) e3p/e3p_test.cpp e3p/$(e3p_obj) -o e3p/e3p_test $(CXXFLAGS)

@@ -17,7 +17,7 @@ typedef std::numeric_limits<double> dbl;
 #include "cover.h"
 #include "mcer_base.h"
 #include "solver_wrapper.h"
-
+#include "cls_mcer.h"
 
 #include "mcer.h"
 
@@ -66,8 +66,8 @@ void MCER::_f(int el, bitset<100> mask, double wcurr) {
 }
 
 Solution MCER::solve() {
-
-	create_CLS();
+	CLS_MCER cls_mcer = CLS_MCER(*(context->instance));
+	create_CLS(&cls_mcer);
 
 	// Specific cut.
 	for (int i = 0; i<m; i++) {

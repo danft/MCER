@@ -6,7 +6,7 @@ using namespace std;
 #include "mcerk.h"
 #include "solver_wrapper.h"
 #include "cls.h"
-#include "cls_mcer.h"
+#include "cls_mce.h"
 
 
 int main() {
@@ -15,7 +15,7 @@ int main() {
 	auto instance = read_instance_from_file(cin);
 
 	Context context = Context(&instance);
-	CLS_MCER cls = CLS_MCER(instance);
+	CLS_MCE cls = CLS_MCE(instance);
 
 	MCERK mcerk = MCERK(&context, &cls);
 

@@ -3,14 +3,16 @@
 using namespace std;
 
 #include "greedy.h"
+#include "cls_mcer.h"
+#include "cls.h"
 
-
-Greedy::Greedy(Context *context) : MCER_Base(context), context(context) {
+Greedy::Greedy(Context *ctx, CLS *cls_) : MCER_Base(ctx), context(ctx), cls(cls_) {
 	used = vector<bool>(context->instance->m, false);
 }
 
 Solution Greedy::solve() {
-	create_CLS();
+
+	create_CLS(cls);
 
 	clock_t t1 = clock();
 	f();

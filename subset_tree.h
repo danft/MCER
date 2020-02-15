@@ -16,9 +16,9 @@ struct STree {
 	vector<Node> nodes;
 	vector<vector<int>> wh;
 	STree(int n) ;
-	void add_nodes(vector<int> &I) ;
-	bool has(vector<int> &I) ;
-	bool _has(vector<int> &I, int k, int t);
+	void add_nodes(const vector<int> &I);
+	bool has(const vector<int> &I);
+	bool _has(const vector<int> &I, int k, int t);
 };
 
 

@@ -12,9 +12,10 @@ using namespace std;
 class MCERK : public MCER_Base {
 	public:
 		Solution solve();
-		MCERK(Context *context);
+		MCERK(Context *context, CLS *cls);
 	private:
 		Context *context;
+		CLS *cls;
 		vector<bool> used;
 		vector<bool> used_opt;
 		void f(int ej, bitset<100> mask, int k, double wcurr);

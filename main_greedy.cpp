@@ -5,6 +5,7 @@ using namespace std;
 #include "instance.h"
 #include "greedy.h"
 #include "solver_wrapper.h"
+#include "cls_mcer.h"
 
 
 int main() {
@@ -13,7 +14,8 @@ int main() {
 
 	Context context = Context(&instance);
 
-	Greedy greedy = Greedy(&context);
+	CLS_MCER cls = CLS_MCER(instance);
+	Greedy greedy = Greedy(&context, &cls);
 
 	solve(greedy, instance);
 

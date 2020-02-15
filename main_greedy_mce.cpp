@@ -3,23 +3,21 @@
 using namespace std;
 
 #include "instance.h"
-#include "mcerk.h"
+#include "greedy.h"
 #include "solver_wrapper.h"
-#include "cls.h"
-#include "cls_mcer.h"
+#include "cls_mce.h"
 
 
 int main() {
-	//ifstream in("input/AB020.txt");
-
+	//ifstream in("input/AB090.txt");
 	auto instance = read_instance_from_file(cin);
 
 	Context context = Context(&instance);
-	CLS_MCER cls = CLS_MCER(instance);
 
-	MCERK mcerk = MCERK(&context, &cls);
+	CLS_MCE cls = CLS_MCE(instance);
+	Greedy greedy = Greedy(&context, &cls);
 
-	solve(mcerk, instance);
+	solve(greedy, instance);
 
 	return 0;
 }

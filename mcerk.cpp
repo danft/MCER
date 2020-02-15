@@ -6,8 +6,9 @@ using namespace std;
 
 #include "mcerk.h"
 #include "mcer_base.h"
+#include "cls_mcer.h"
 
-MCERK::MCERK(Context *context) : MCER_Base(context), context(context){
+MCERK::MCERK(Context *ctx, CLS *cls_) : MCER_Base(ctx), context(ctx), cls(cls_){
 	used = vector<bool>(context->instance->m, false);
 	used_opt = vector<bool>(context->instance->m, false);
 	wrem = vector<vector<double>>(
@@ -18,17 +19,14 @@ MCERK::MCERK(Context *context) : MCER_Base(context), context(context){
 }
 
 Solution MCERK::solve() {
-	create_CLS();
 
-
+	create_CLS(cls);
 
 	for (int i = 0; i<context->instance->m; i++) {
 		vector<double> w2 = vector<double>(context->instance->m-i, 0);
 
-		const vector<Cover> &cls = context->cls_list[i];
-
 		for (int j = i; j<context->instance->m; j++)
-			w2.push_back(cls[0].w - context->instance->wel[j]);
+			w2.push_back(context->cls_list[i][0].w - context->instance->wel[j]);
 		sort(w2.rbegin(), w2.rend());
 
 		wrem[i][0] = 0;

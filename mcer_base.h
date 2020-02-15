@@ -5,6 +5,7 @@
 #include "cover.h"
 #include "instance.h"
 #include "context.h"
+#include "cls.h"
 
 #include <vector>
 
@@ -12,7 +13,7 @@ using namespace std;
 
 class MCER_Base {
 	public:
-		void create_CLS();
+		void create_CLS(CLS *cls);
 		virtual Solution solve() = 0;
 		virtual ~MCER_Base();
 		MCER_Base(Context *context);
