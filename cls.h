@@ -23,6 +23,8 @@ public:
 
 	virtual vector<vector<Cover>> create_cls() = 0;
 
+
+
 protected:
 	bool is_covered(const vector<int> &covl);
 	void add_cov(const vector<int> &covl);
@@ -33,7 +35,6 @@ protected:
 private:
 	STree tree;
 	int n;
-
 };
 
 #endif /* CLS_H_ */

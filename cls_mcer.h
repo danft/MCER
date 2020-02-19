@@ -12,10 +12,14 @@ using namespace std;
 
 class CLS_MCER : public CLS {
 public:
-	CLS_MCER(Instance instance);
+	CLS_MCER(Instance ins);
 	vector<vector<Cover>> create_cls();
+	int get_e3p_feasible() const;
+	int get_e3p_unfeasible() const;
 private:
 	Instance instance;
+	int e3p_feasible = 0;
+	int e3p_unfeasible = 0;
 };
 
 #endif

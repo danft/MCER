@@ -7,15 +7,15 @@ using namespace std;
 #include "solver_wrapper.h"
 
 
-int main() {
+int main(int argc, char* argv[]) {
 	//ifstream in("input/AB090.txt");
 	auto instance = read_instance_from_file(cin);
 
-	Context context = Context(&instance);
+	Context context = Context(&instance, argc, argv);
 
 	MCER mcer = MCER(&context);
 
-	solve(mcer, instance);
+	solve(mcer, &context);
 
 	return 0;
 }

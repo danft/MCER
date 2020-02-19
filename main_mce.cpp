@@ -9,17 +9,17 @@ using namespace std;
 #include "cls_mce.h"
 
 
-int main() {
+int main(int argc, char *argv[]) {
 	//ifstream in("input/AB020.txt");
 
 	auto instance = read_instance_from_file(cin);
 
-	Context context = Context(&instance);
+	Context context = Context(&instance, argc, argv);
 	CLS_MCE cls = CLS_MCE(instance);
 
 	MCERK mcerk = MCERK(&context, &cls);
 
-	solve(mcerk, instance);
+	solve(mcerk, &context);
 
 	return 0;
 }

@@ -3,7 +3,7 @@
 
 #include "instance.h"
 
-void solve(MCER_Base &solver, Instance &ins);
+void solve(MCER_Base &solver, const Context *context);
 
 
 

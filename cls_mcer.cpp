@@ -72,7 +72,8 @@ vector<vector<Cover>> CLS_MCER::create_cls() {
 
 					cnt_e3p++;
 					sols = e3p(a, b, instance.X[i], instance.X[j], instance.X[k], instance.Y[i], instance.Y[j], instance.Y[k]);
-
+					e3p_feasible += sols.size() > 0;
+					e3p_unfeasible += sols.size() == 0;
 					for (int h = 0; h < sols.size(); h++) {
 						cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
@@ -88,6 +89,14 @@ vector<vector<Cover>> CLS_MCER::create_cls() {
 		covs[l] = remove_duplicates(c_tmp);
 	}
 
-	cout << "Number of times E3P was called: " << cnt_e3p << endl;
+	//cout << "Number of times E3P was called: " << cnt_e3p << endl;
 	return covs;
+}
+
+int CLS_MCER::get_e3p_feasible() const {
+	return e3p_feasible;
+}
+
+int CLS_MCER::get_e3p_unfeasible() const {
+	return e3p_unfeasible;
 }

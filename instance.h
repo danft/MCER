@@ -12,7 +12,7 @@ struct Instance {
 	vector<double> X, Y;
 	int n, m, k;
 
-	string info();
+	string info() const;
 	Instance() {
 	}
 };

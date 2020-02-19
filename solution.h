@@ -11,7 +11,9 @@ using namespace std;
 class Solution {
 	public:
 	
-	string info();
+	string info() const;
+	string table() const;
+
 	Solution(Context *context, vector<int> opt, long long nsols);
 	Solution(Context *context, vector<int> opt, long long nsols, vector<bool> used);
 
@@ -28,6 +30,9 @@ class Solution {
 
 	long long sols_att;
 	double sol_val;
+
+	int e3p_feasible = 0;
+	int e3p_unfeasible = 0;
 };
 
 #endif

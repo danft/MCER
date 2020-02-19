@@ -1,17 +1,21 @@
 #include <sstream>
 #include <vector>
 #include <set>
-
+#include <algorithm>
+#include <iomanip>
 #include "solution.h"
 #include "cover.h"
 
 using namespace std;
 
-Solution::Solution(Context *context, vector<int> opt, long long nsols, vector<bool> used) : used(used) {
+Solution::Solution(Context *context, vector<int> opt, long long nsols, vector<bool> us) : used(us) {
 		instance = *(context->instance);
 		opt_cov = vector<Cover>(instance.m);
 		cls_size = vector<size_t>(instance.m);
 		cov_set = set<int>();
+
+		e3p_feasible = context->e3p_feasible;
+		e3p_unfeasible = context->e3p_unfeasible;
 
 		for (int i = 0; i<context->instance->m; i++)
 		{
@@ -22,6 +26,7 @@ Solution::Solution(Context *context, vector<int> opt, long long nsols, vector<bo
 
 		this->time_ellapsed = context->times;
 		this->sols_att = nsols;
+
 }
 
 Solution::Solution(Context *context, vector<int> opt, long long nsols)
@@ -41,7 +46,42 @@ void Solution::add_to_cover(const Cover &cov) {
 		sol_val -= used[i] * instance.wel[i];
 }
 
-string Solution::info() {
+string Solution::table() const{
+	const string elp[] = {",", "$"};
+
+	ostringstream ss;
+
+	ss <<"$"<< instance.n << "$"<<" & " <<"$"<< instance.m <<"$"<< " & " <<"$"<< instance.k <<"$" << " & ";
+
+	int cnt = 0;
+	ss << "$";
+	for (int i = 0; i<instance.m; i++) {
+		if (used[i]) {
+			cnt++;
+			ss << i+1 << elp[instance.k==cnt];
+		}
+
+	}
+
+	ss << "&";
+
+	ss << "$" << sol_val << "$" << " &";
+
+	ss << "$" << *max_element(cls_size.begin(), cls_size.end()) << "$" << " & ";
+
+	ss << "$" << e3p_feasible<< "$ & $" << e3p_unfeasible << "$" << "&";
+
+	ss << "$" << sols_att << "$" << " &";
+
+	ss <<setprecision(2)<<fixed<< (1.0*time_ellapsed[0]) / CLOCKS_PER_SEC << "& " <<  (1.0*time_ellapsed[1]) / CLOCKS_PER_SEC << "\\\\";
+
+	ss << "\\";
+	//ss <<endl;
+
+	return ss.str();
+}
+
+string Solution::info() const{
 	ostringstream ss;	
 	ss << "Solution: \n";
 
@@ -92,7 +132,7 @@ string Solution::info() {
 	for (int i = 0; i<instance.m; i++) if (used[i])
 	{
 		cnt++;
-		ss <<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
+		ss <<setprecision(15)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
 	}
 
 	ss << endl;

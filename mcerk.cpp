@@ -14,7 +14,7 @@ MCERK::MCERK(Context *ctx, CLS *cls_) : MCER_Base(ctx), context(ctx), cls(cls_){
 	wrem = vector<vector<double>>(
 			context->instance->m,
 			vector<double>(context->instance->m+1, 0));
-	wopt = 0;
+	wopt = -1e9;
 	cntsols = 0;
 }
 

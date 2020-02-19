@@ -8,6 +8,7 @@ using namespace std;
 #include "mcer_base.h"
 #include "instance.h"
 #include "cls.h"
+#include "cls_mcer.h"
 
 MCER_Base::MCER_Base(Context *context) : context(context) {
 	cov_cnt = vector<int>(context->instance->n, 0);
@@ -24,6 +25,12 @@ void MCER_Base::create_CLS(CLS* cls) {
 	auto covers = cls->create_cls();
 	context->set_covers(&covers);
 	context->times.push_back(clock() - t1);
+
+	CLS_MCER *cls2 = (CLS_MCER*) cls;
+	if (cls2 != NULL){
+		context->e3p_feasible = cls2->get_e3p_feasible();
+		context->e3p_unfeasible = cls2->get_e3p_unfeasible();
+	}
 }
 
 bool MCER_Base::is_cov(int i) {
