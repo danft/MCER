@@ -23,7 +23,8 @@ class MCER : public MCER_Base {
 
 		vector<double> wacc;
 		double wopt = 0;
-		long long cntsols;
+		long long cnt_leaves = 0;
+		long long cnt_nodes = 0;
 		int n, m;
 };
 

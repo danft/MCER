@@ -13,14 +13,18 @@ class Solution {
 	
 	string info() const;
 	string table() const;
+	string list() const;
 
-	Solution(Context *context, vector<int> opt, long long nsols);
-	Solution(Context *context, vector<int> opt, long long nsols, vector<bool> used);
+	Solution(Context *context, vector<int> opt, long long nleaves, long long nnodes);
+	Solution(Context *context, vector<int> opt, long long nleaves, long long nnodes, vector<bool> used);
 
 	Solution();
 
 	private:
 	void add_to_cover(const Cover &cov);
+	double get_sol_val() const;
+	string used_str(string spr) const;
+
 	Instance instance;
 	vector<Cover> opt_cov;
 	vector<clock_t> time_ellapsed;
@@ -28,11 +32,11 @@ class Solution {
 	vector<size_t> cls_size;
 	vector<bool> used;
 
-	long long sols_att;
-	double sol_val;
+	long long cnt_leaves;
+	long long cnt_nodes;
 
-	int e3p_feasible = 0;
-	int e3p_unfeasible = 0;
+	int e3p_feasible = -1;
+	int e3p_unfeasible = -1;
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cmath>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -20,11 +21,11 @@ string Instance::info() const {
 	ss << "a = [";
 
 	for (int i = 0; i<m; i++)
-		ss << a[i] << elp[i+1==m];
+		ss <<setprecision(17)<<fixed<< a[i] << elp[i+1==m];
 
 	ss << "b = [";
 	for (int i = 0; i<m; i++) 
-		ss << b[i] << elp[i+1==m];
+		ss <<setprecision(17)<<fixed<< b[i] << elp[i+1==m];
 
 	ss << "wel = [";
 	for (int i = 0; i<m; i++) 
@@ -33,11 +34,11 @@ string Instance::info() const {
 	ss << "X = [";
 
 	for (int i = 0; i<X.size(); i++)
-		ss << X[i] << elp[i+1==n];
+		ss <<setprecision(17)<<fixed<< X[i] << elp[i+1==n];
 
 	ss << "Y = [";
 	for (int i = 0; i<Y.size(); i++) 
-		ss << Y[i] << elp[i+1==n];
+		ss <<setprecision(17)<<fixed<< Y[i] << elp[i+1==n];
 
 	ss << "wpnt = [";
 	for (int i = 0; i<Y.size(); i++) 

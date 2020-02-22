@@ -19,4 +19,7 @@ void solve(MCER_Base &solver, const Context *context) {
 
 	if (context->print_table)
 		cout << sol.table() << endl;
+
+	if (context->print_list)
+		cout << sol.list() << endl;
 }

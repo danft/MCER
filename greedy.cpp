@@ -22,6 +22,7 @@ Solution Greedy::solve() {
 			context,
 			get_opt(),
 			1,
+			1,
 			used);
 }
 

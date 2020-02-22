@@ -25,9 +25,12 @@ Context::Context(const Instance *instance, int argc, char *argv[]) : Context(ins
 
 		if (strcmp(argv[i], "--print-info") == 0)
 			print_info = true;
+
+		if (strcmp(argv[i], "--print-list") == 0)
+			print_list = true;
 	}
 
-	if (!print_table && !print_info)
+	if (!print_table && !print_info && !print_list)
 		print_info = true;
 }
 

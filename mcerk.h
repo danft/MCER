@@ -22,7 +22,8 @@ class MCERK : public MCER_Base {
 		double wopt;
 		vector<vector<double>> wrem;
 
-		long long cntsols = 0;
+		long long cnt_leaves = 0;
+		long long cnt_nodes = 0;
 };
 
 #endif

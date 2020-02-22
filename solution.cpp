@@ -3,12 +3,16 @@
 #include <set>
 #include <algorithm>
 #include <iomanip>
+#include <numeric>
+
+#include <iostream>
+
 #include "solution.h"
 #include "cover.h"
 
 using namespace std;
 
-Solution::Solution(Context *context, vector<int> opt, long long nsols, vector<bool> us) : used(us) {
+Solution::Solution(Context *context, vector<int> opt, long long nleaves, long long nnodes, vector<bool> us) : used(us) {
 		instance = *(context->instance);
 		opt_cov = vector<Cover>(instance.m);
 		cls_size = vector<size_t>(instance.m);
@@ -17,65 +21,106 @@ Solution::Solution(Context *context, vector<int> opt, long long nsols, vector<bo
 		e3p_feasible = context->e3p_feasible;
 		e3p_unfeasible = context->e3p_unfeasible;
 
-		for (int i = 0; i<context->instance->m; i++)
-		{
+		for (int i = 0; i<context->instance->m; i++) {
 			opt_cov[i] = context->cls_list[i][opt[i]];
 			cls_size[i] = context->cls_list[i].size();
-			add_to_cover(opt_cov[i]);
+
+			if (used[i])
+				add_to_cover(opt_cov[i]);
 		}
 
 		this->time_ellapsed = context->times;
-		this->sols_att = nsols;
+		this->cnt_leaves = nleaves;
+		this->cnt_nodes = nnodes;
+}
+
+Solution::Solution(Context *context, vector<int> opt, long long nleaves, long long nnodes)
+: Solution(context, opt, nleaves, nnodes, vector<bool>(context->instance->m, true)){
 
 }
 
-Solution::Solution(Context *context, vector<int> opt, long long nsols)
-: Solution(context, opt, nsols, vector<bool>(context->instance->m, true)){
+double Solution::get_sol_val() const {
+	double sol_val = 0;
 
+	for (auto it: cov_set) {
+		sol_val += instance.wpnt[it];
+	}
+
+	for (int i = 0; i<instance.m; i++)
+		sol_val -= used[i] * instance.wel[i];
+
+	return sol_val;
 }
 
 void Solution::add_to_cover(const Cover &cov) {
 	cov_set.insert(cov.covl.begin(), cov.covl.end());
-
-	sol_val = 0;
-
-	for (auto it: cov_set)
-		sol_val += instance.wpnt[it];
-
-	for (int i = 0; i<instance.m; i++)
-		sol_val -= used[i] * instance.wel[i];
 }
 
-string Solution::table() const{
-	const string elp[] = {",", "$"};
-
+string num_str(int x) {
 	ostringstream ss;
+	ss << "\\num{" << x << "}";
+	return ss.str();
+}
 
-	ss <<"$"<< instance.n << "$"<<" & " <<"$"<< instance.m <<"$"<< " & " <<"$"<< instance.k <<"$" << " & ";
+string num_str(double x, int precision = 1) {
+	ostringstream ss;
+	ss << setprecision(precision) << fixed << "\\num{" << x << "}";
+	return ss.str();
+}
 
+string Solution::used_str(string spr) const{
+	const string elp[] = {spr, ""};
+	ostringstream ss;
 	int cnt = 0;
-	ss << "$";
 	for (int i = 0; i<instance.m; i++) {
 		if (used[i]) {
 			cnt++;
-			ss << i+1 << elp[instance.k==cnt];
+			ss << num_str(i+1) << elp[instance.k==cnt];
 		}
-
 	}
+
+	return ss.str();
+}
+
+string Solution::list() const {
+	ostringstream ss;
+	ss << num_str(instance.n)<<";" << num_str(instance.m) << ";" <<num_str(instance.k) << ";";
+	ss << used_str(",") << ";";
+	ss <<setprecision(1) << fixed << num_str(get_sol_val()) << ";";
+	//ss << num_str((int)*max_element(cls_size.begin(), cls_size.end())) << ";";
+
+	ss << num_str((int) cls_size[instance.k-1]) << ";";
+
+	if (e3p_feasible >= 0)
+		ss << num_str(e3p_feasible + e3p_unfeasible)<< ";";
+	ss << num_str((int)cnt_nodes)<< ";" << num_str((int) cnt_leaves) << ";";
+	ss <<setprecision(2)<<fixed<< num_str((1.0*time_ellapsed[0]) / CLOCKS_PER_SEC, 2) << ";" <<  num_str((1.0*time_ellapsed[1] + 1.0*time_ellapsed[0]) / CLOCKS_PER_SEC, 2);
+
+	return ss.str();
+}
+
+string Solution::table() const{
+	const string elp[] = {",", ""};
+
+	ostringstream ss;
+
+	ss << num_str(instance.n) <<" & " << num_str(instance.m) << " & " <<num_str(instance.k)  << " & ";
+
+	ss << used_str(",");
 
 	ss << "&";
 
-	ss << "$" << sol_val << "$" << " &";
+	ss <<setprecision(1) << fixed << num_str(get_sol_val()) << " &";
 
-	ss << "$" << *max_element(cls_size.begin(), cls_size.end()) << "$" << " & ";
+	ss << num_str((int)*max_element(cls_size.begin(), cls_size.end())) << " & ";
 
-	ss << "$" << e3p_feasible<< "$ & $" << e3p_unfeasible << "$" << "&";
+	if (e3p_feasible >= 0)
+		ss << num_str(e3p_feasible + e3p_unfeasible)<< " & ";
 
-	ss << "$" << sols_att << "$" << " &";
+	ss << num_str((int)cnt_nodes)<< " & " << num_str((int) cnt_leaves) << " & ";
 
-	ss <<setprecision(2)<<fixed<< (1.0*time_ellapsed[0]) / CLOCKS_PER_SEC << "& " <<  (1.0*time_ellapsed[1]) / CLOCKS_PER_SEC << "\\\\";
+	ss <<setprecision(2)<<fixed<< num_str((1.0*time_ellapsed[0]) / CLOCKS_PER_SEC, 2) << "& " <<  num_str((1.0*time_ellapsed[1] + 1.0*time_ellapsed[0]) / CLOCKS_PER_SEC, 2) << "\\\\";
 
-	ss << "\\";
 	//ss <<endl;
 
 	return ss.str();
@@ -106,8 +151,8 @@ string Solution::info() const{
 		ss << "CLS's size for E_" << i+1 << ": " << cls_size[i] << endl;
 	ss << endl;
 
-	ss << "Number of solutions attempted: " << sols_att << endl; 
-	ss << "Maximum Cover value:" << sol_val << endl;
+	ss << "Number of solutions attempted: " << cnt_leaves << endl; 
+	ss << "Maximum Cover value:" << get_sol_val() << endl;
 	ss << endl;
 	
 	for (int i = 0; i<instance.m; i++) if (used[i]){
@@ -132,7 +177,7 @@ string Solution::info() const{
 	for (int i = 0; i<instance.m; i++) if (used[i])
 	{
 		cnt++;
-		ss <<setprecision(15)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
+		ss <<setprecision(17)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
 	}
 
 	ss << endl;

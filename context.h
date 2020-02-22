@@ -27,9 +27,10 @@ class Context {
 
 		bool print_table = false;
 		bool print_info = false;
+		bool print_list = false;
 
-		int e3p_feasible = 0;
-		int e3p_unfeasible = 0;
+		int e3p_feasible = -1;
+		int e3p_unfeasible = -1;
 
 };
 

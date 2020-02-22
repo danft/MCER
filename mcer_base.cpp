@@ -26,7 +26,7 @@ void MCER_Base::create_CLS(CLS* cls) {
 	context->set_covers(&covers);
 	context->times.push_back(clock() - t1);
 
-	CLS_MCER *cls2 = (CLS_MCER*) cls;
+	CLS_MCER *cls2 = dynamic_cast<CLS_MCER*>(cls);
 	if (cls2 != NULL){
 		context->e3p_feasible = cls2->get_e3p_feasible();
 		context->e3p_unfeasible = cls2->get_e3p_unfeasible();
