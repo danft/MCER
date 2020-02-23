@@ -5,6 +5,7 @@
 #include <set>
 #include "cover.h"
 #include "context.h"
+#include "instance.h"
 
 using namespace std;
 
@@ -21,12 +22,12 @@ class Solution {
 	Solution();
 
 	private:
-	void add_to_cover(const Cover &cov);
+	void add_to_cover(const Cover<Instance::mask_size> &cov);
 	double get_sol_val() const;
 	string used_str(string spr) const;
 
 	Instance instance;
-	vector<Cover> opt_cov;
+	vector<Cover<Instance::mask_size>> opt_cov;
 	vector<clock_t> time_ellapsed;
 	set<int> cov_set;
 	vector<size_t> cls_size;

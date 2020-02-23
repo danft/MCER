@@ -13,7 +13,7 @@ using namespace std;
 class CLS_MCER : public CLS {
 public:
 	CLS_MCER(Instance ins);
-	vector<vector<Cover>> create_cls();
+	vector<vector<Cover<Instance::mask_size>>> create_cls();
 	int get_e3p_feasible() const;
 	int get_e3p_unfeasible() const;
 private:

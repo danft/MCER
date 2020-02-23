@@ -11,9 +11,11 @@ struct Instance {
 	vector<double> a, b, wel, wpnt;
 	vector<double> X, Y;
 	int n, m, k;
+	const static size_t mask_size = 200;
 
 	string info() const;
 	Instance() {
+		n=m=k=0;
 	}
 };
 

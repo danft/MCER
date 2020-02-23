@@ -50,7 +50,7 @@ double MCER_Base::apply_cover(int el, int jcov) {
 	return apply_cover(el, jcov, 1);
 }
 
-bool MCER_Base::covers_any(bitset<100> mask, const Cover &cov) {
+bool MCER_Base::covers_any(bitset<Instance::mask_size> mask, const Cover<Instance::mask_size> &cov) {
 	return !((cov.mask | mask) == mask);
 }
 

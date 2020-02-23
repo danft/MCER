@@ -7,9 +7,11 @@
 
 using namespace std;
 
-struct Cover {
+template<std::size_t N>
+class Cover{
+public:
 	double w;
-	bitset<100> mask;
+	bitset<N> mask;
 	vector<int> covl;
 
 	double theta, xc, yc;

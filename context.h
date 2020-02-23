@@ -14,14 +14,14 @@ using namespace std;
 class Context {
 	public:
 		const Instance *instance;
-		vector<vector<Cover>> cls_list;
+		vector<vector<Cover<Instance::mask_size>>> cls_list;
 
-		Context(const Instance *instance, const vector<vector<Cover>> *covers);
+		Context(const Instance *instance, const vector<vector<Cover<Instance::mask_size>>> *covers);
 		Context(const Instance *instance);
 
 		Context(const Instance *instance, int argc, char *argv[]);
 
-		void set_covers(const vector<vector<Cover>> *covs);
+		void set_covers(const vector<vector<Cover<Instance::mask_size>>> *covs);
 
 		vector<clock_t> times;
 

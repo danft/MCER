@@ -17,7 +17,7 @@ class MCER : public MCER_Base {
 		Solution solve();
 
 	private:
-		void _f(int el, bitset<100> mask, double wcurr);
+		void _f(int el, bitset<Instance::mask_size> mask, double wcurr);
 
 		Context *context;
 

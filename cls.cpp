@@ -13,6 +13,7 @@ using namespace std;
 #include "cls.h"
 #include "subset_tree.h"
 #include "cover.h"
+#include "instance.h"
 
 CLS::CLS(int n): tree(STree(n)){
 	// TODO Auto-generated constructor stub
@@ -41,12 +42,12 @@ void CLS::reset() {
 }
 
 
-vector<Cover> CLS::remove_duplicates(vector<Cover> &c_tmp){
+vector<Cover<Instance::mask_size>> CLS::remove_duplicates(vector<Cover<Instance::mask_size>> &c_tmp){
 
-	sort(c_tmp.begin(), c_tmp.end(), [](const Cover &ca, const Cover &cb)->bool {return ca.covl.size() > cb.covl.size();});
+	sort(c_tmp.begin(), c_tmp.end(), [](const Cover<Instance::mask_size> &ca, const Cover<Instance::mask_size> &cb)->bool {return ca.covl.size() > cb.covl.size();});
 
 	STree tree2 = STree(n);
-	vector<Cover> ret;
+	vector<Cover<Instance::mask_size>> ret;
 
 	for (auto c : c_tmp)
 	{
@@ -58,7 +59,7 @@ vector<Cover> CLS::remove_duplicates(vector<Cover> &c_tmp){
 		}
 	}
 
-	sort(ret.begin(), ret.end(), [](const Cover &ca, const Cover &cb)->bool {return ca.w > cb.w;});
+	sort(ret.begin(), ret.end(), [](const Cover<Instance::mask_size> &ca, const Cover<Instance::mask_size> &cb)->bool {return ca.w > cb.w;});
 
 	return ret;
 }

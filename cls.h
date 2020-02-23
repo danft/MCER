@@ -21,7 +21,7 @@ public:
 	CLS(int n);
 	virtual ~CLS();
 
-	virtual vector<vector<Cover>> create_cls() = 0;
+	virtual vector<vector< Cover<Instance::mask_size> >> create_cls() = 0;
 
 
 
@@ -29,7 +29,7 @@ protected:
 	bool is_covered(const vector<int> &covl);
 	void add_cov(const vector<int> &covl);
 	void add_ifnot_covered(const vector<int> &covl);
-	vector<Cover> remove_duplicates(vector<Cover> &c_tmp);
+	vector<Cover<Instance::mask_size>> remove_duplicates(vector<Cover<Instance::mask_size>> &c_tmp);
 	void reset();
 
 private:

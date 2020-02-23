@@ -9,12 +9,13 @@
 
 #include "solution.h"
 #include "cover.h"
+#include "instance.h"
 
 using namespace std;
 
 Solution::Solution(Context *context, vector<int> opt, long long nleaves, long long nnodes, vector<bool> us) : used(us) {
 		instance = *(context->instance);
-		opt_cov = vector<Cover>(instance.m);
+		opt_cov = vector<Cover<Instance::mask_size>>(instance.m);
 		cls_size = vector<size_t>(instance.m);
 		cov_set = set<int>();
 
@@ -52,7 +53,7 @@ double Solution::get_sol_val() const {
 	return sol_val;
 }
 
-void Solution::add_to_cover(const Cover &cov) {
+void Solution::add_to_cover(const Cover<Instance::mask_size> &cov) {
 	cov_set.insert(cov.covl.begin(), cov.covl.end());
 }
 

@@ -6,14 +6,14 @@
 
 using namespace std;
 
-Context::Context(const Instance *instance, const vector<vector<Cover>> *covers) : Context(instance) {
+Context::Context(const Instance *instance, const vector<vector<Cover<Instance::mask_size>>> *covers) : Context(instance) {
 	// copies the CLSs
 	this->cls_list = *covers;
 }
 
 Context::Context(const Instance *instance) {
 	this->instance = instance;
-	this->cls_list = vector<vector<Cover>>();
+	this->cls_list = vector<vector<Cover<Instance::mask_size>>>();
 	times = vector<clock_t>();
 }
 
@@ -35,7 +35,7 @@ Context::Context(const Instance *instance, int argc, char *argv[]) : Context(ins
 }
 
 
-void Context::set_covers(const vector<vector<Cover>> *covs) {
+void Context::set_covers(const vector<vector<Cover<Instance::mask_size>>> *covs) {
 	// copies the CLSs
 	this->cls_list = *covs;
 }

@@ -13,6 +13,7 @@ using namespace std;
 #include "cover.h"
 #include "utils.h"
 #include "e2p/e2p.h"
+#include "instance.h"
 
 CLS_MCE::CLS_MCE(Instance ins): instance(ins), CLS(ins.n) {
 	// TODO Auto-generated constructor stub
@@ -22,19 +23,19 @@ CLS_MCE::~CLS_MCE() {
 	// TODO Auto-generated destructor stub
 }
 
-vector<vector<Cover>> CLS_MCE::create_cls() {
+vector<vector<Cover<Instance::mask_size>>> CLS_MCE::create_cls() {
 	int n = instance.n;
-	auto covs = vector<vector<Cover>>(instance.m);
+	auto covs = vector<vector<Cover<Instance::mask_size>>>(instance.m);
 
 	for (int l = 0; l<instance.m; ++l) {
 		reset();
 		double a = instance.a[l];
 		double b = instance.b[l];
-		vector<Cover> c_tmp;
+		vector<Cover<Instance::mask_size>> c_tmp;
 
 
 		for (int i = 0; i<n; i++){
-			Cover cov = Cover(instance, l, instance.X[i], instance.Y[i], 0);
+			auto cov = Cover<Instance::mask_size>(instance, l, instance.X[i], instance.Y[i], 0);
 
 			if (!is_covered(cov.covl)) {
 				c_tmp.push_back(cov);
@@ -45,7 +46,7 @@ vector<vector<Cover>> CLS_MCE::create_cls() {
 				vector<pair<double, Point>> sols = e2p(a, b, instance.X[i], instance.X[j], instance.Y[i], instance.Y[j], false);
 
 				for (int h = 0; h<sols.size(); h++) {
-					cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
+					cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
 					if (!is_covered(cov.covl)) {
 						c_tmp.push_back(cov);

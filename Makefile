@@ -1,4 +1,5 @@
-CXXFLAGS=-llapack -O4
+CXXFLAGS=-llapack -O3
+
 obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o greedy.o cls.o cls_mce.o
 
 src=$(obj:.o=.cpp)
@@ -41,4 +42,4 @@ e3p_test: e3p/e3p_test.cpp e3p/$(e3p_obj)
 
 .PHONY: clean
 clean:
-	rm *.o mcer $(e3p_DIR)/*.o $(e2p_DIR)/*.o 
+	rm *.o mcerk greedy greedy_mce mcer $(e3p_DIR)/*.o $(e2p_DIR)/*.o 

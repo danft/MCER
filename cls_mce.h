@@ -20,7 +20,7 @@ public:
 	CLS_MCE(Instance ins);
 	virtual ~CLS_MCE();
 
-	vector<vector<Cover>> create_cls();
+	vector<vector<Cover<Instance::mask_size>>> create_cls();
 
 private:
 	Instance instance;

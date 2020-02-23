@@ -24,7 +24,7 @@ class MCER_Base {
 
 		void set_opt();
 		vector<int> get_opt();
-		bool covers_any(bitset<100> mask, const Cover & cov);
+		bool covers_any(bitset<Instance::mask_size> mask, const Cover<Instance::mask_size> & cov);
 		bool is_cov(int i);
 		
 	private: 

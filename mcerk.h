@@ -16,14 +16,24 @@ class MCERK : public MCER_Base {
 	private:
 		Context *context;
 		CLS *cls;
+
+
+		/*solution details*/
 		vector<bool> used;
 		vector<bool> used_opt;
-		void f(int ej, bitset<100> mask, int k, double wcurr);
 		double wopt;
-		vector<vector<double>> wrem;
-
 		long long cnt_leaves = 0;
 		long long cnt_nodes = 0;
+		/**/
+
+
+		/*backtracking functions*/
+		void f(int ej, bitset<Instance::mask_size> mask, double wcurr);
+		void _f(int ej, int k);
+
+		/*upper-bound and cuts*/
+		vector<vector<double>> wrem;
+		double f_upper(int ej, bitset<Instance::mask_size> mask);
 };
 
 #endif

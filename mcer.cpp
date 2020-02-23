@@ -33,7 +33,7 @@ MCER::MCER(Context *context) : MCER_Base(context), context(context){
 	cnt_leaves = 0;
 }
 
-void MCER::_f(int el, bitset<100> mask, double wcurr) {
+void MCER::_f(int el, bitset<Instance::mask_size> mask, double wcurr) {
 	if (el == m) {
 		cnt_leaves++;
 		cnt_nodes++;
@@ -81,7 +81,7 @@ Solution MCER::solve() {
 	}
 
 	clock_t t1 = clock();
-	_f(0, bitset<100>(0), 0);
+	_f(0, bitset<Instance::mask_size>(0), 0);
 	context->times.push_back(clock()-t1);
 
 	return Solution(context, get_opt(), cnt_leaves, cnt_nodes);

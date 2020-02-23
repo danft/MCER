@@ -30,9 +30,9 @@ bool check2(double a, double b, double x1, double x2, double x3, double y1, doub
 CLS_MCER::CLS_MCER(Instance ins): instance(ins), CLS(ins.n){
 }
 
-vector<vector<Cover>> CLS_MCER::create_cls() {
+vector<vector<Cover<Instance::mask_size>>> CLS_MCER::create_cls() {
 
-	auto covs = vector<vector<Cover>>(instance.m);
+	auto covs = vector<vector<Cover<Instance::mask_size>>>(instance.m);
 	int cnt_e3p = 0;
 	for (int l = 0; l<instance.m; ++l) {
 		reset();
@@ -40,10 +40,10 @@ vector<vector<Cover>> CLS_MCER::create_cls() {
 		double a = instance.a[l];
 		double b = instance.b[l];
 
-		vector<Cover> c_tmp;
+		vector<Cover<Instance::mask_size>> c_tmp;
 
 		for (int i = 0; i<instance.n; i++) {
-			Cover cov = Cover(instance, l, instance.X[i], instance.Y[i], 0);
+			auto cov = Cover<Instance::mask_size>(instance, l, instance.X[i], instance.Y[i], 0);
 
 			if (!is_covered(cov.covl)) {
 				c_tmp.push_back(cov);
@@ -57,7 +57,7 @@ vector<vector<Cover>> CLS_MCER::create_cls() {
 				vector<pair<double, Point>> sols = e2p(a, b, instance.X[i], instance.X[j], instance.Y[i], instance.Y[j]);
 
 				for (int h = 0; h<sols.size(); h++) {
-					cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
+					cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
 					if (!is_covered(cov.covl)) {
 						c_tmp.push_back(cov);
@@ -75,7 +75,7 @@ vector<vector<Cover>> CLS_MCER::create_cls() {
 					e3p_feasible += sols.size() > 0;
 					e3p_unfeasible += sols.size() == 0;
 					for (int h = 0; h < sols.size(); h++) {
-						cov = Cover(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
+						cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
 						if (!is_covered(cov.covl)) {
 							c_tmp.push_back(cov);
