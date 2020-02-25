@@ -8,6 +8,7 @@
 #include "cls.h"
 
 #include <vector>
+#include <unordered_set>
 
 using namespace std;
 
@@ -27,11 +28,16 @@ class MCER_Base {
 		bool covers_any(bitset<Instance::mask_size> mask, const Cover<Instance::mask_size> & cov);
 		bool is_cov(int i);
 		
+		bool is_seen(int ej, bitset<Instance::mask_size> mask);
+		void add_seen(int ej, bitset<Instance::mask_size> mask);
+		void clear_seen();
+
 	private: 
 		Context *context;
 		vector<int> cov_cnt;
 		vector<int> curr;
 		vector<int> opt;
+		vector<unordered_set<bitset<Instance::mask_size>>> seen;
 		double apply_cover(int el, int jcov, int mul);
 };
 

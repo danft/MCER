@@ -1,6 +1,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <set>
+
 #include "cls_mcer.h"
 #include "subset_tree.h"
 #include "e2p/e2p.h"
@@ -30,10 +32,20 @@ bool check2(double a, double b, double x1, double x2, double x3, double y1, doub
 CLS_MCER::CLS_MCER(Instance ins): instance(ins), CLS(ins.n, ins.m){
 }
 
+void add_to_set(set<tuple<int,int,int>> &skip, int i, int j, int k){
+	vector<int> tm(3);
+	tm[0] = i; tm[1] = j; tm[2] = k;
+	sort(tm.begin(), tm.end());
+	skip.insert(make_tuple(tm[0], tm[1], tm[2]));
+}
+
 void CLS_MCER::create_cls() {
 
 	int cnt_e3p = 0;
+
 	for (int l = 0; l<instance.m; ++l) {
+		set<tuple<int,int,int>> skip;
+
 		reset();
 
 		double a = instance.a[l];
@@ -56,21 +68,27 @@ void CLS_MCER::create_cls() {
 					cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
 					add_cov(l, cov);
-
-
 				}
 
 				for (int k = j+1; k < instance.n; ++k)
 				{
+					if (skip.count(make_tuple(i, j, k))) continue;
 					if (!check1(a, instance.X[j], instance.X[k], instance.Y[j], instance.Y[k])) continue;
 					if (!check2(a, b, instance.X[i], instance.X[j], instance.X[k], instance.Y[i], instance.Y[j], instance.Y[k])) continue;
 
+					//cout << l << " -> " << i <<", " << j <<", " << k << endl;
 					cnt_e3p++;
 					sols = e3p(a, b, instance.X[i], instance.X[j], instance.X[k], instance.Y[i], instance.Y[j], instance.Y[k]);
 					e3p_feasible += sols.size() > 0;
 					e3p_unfeasible += sols.size() == 0;
 					for (int h = 0; h < sols.size(); h++) {
 						cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
+
+						for (int p : cov.covl){
+							add_to_set(skip, i, j, p);
+							add_to_set(skip, i, k, p);
+							add_to_set(skip, j, k, p);
+						}
 
 						add_cov(l, cov);
 					}

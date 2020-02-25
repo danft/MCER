@@ -25,6 +25,7 @@ public:
 private:
 	Instance instance;
 	vector<vector<Cover<Instance::mask_size>>> cls_list;
+
 };
 
 #endif /* CLS_MCE_H_ */

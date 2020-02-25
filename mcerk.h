@@ -2,6 +2,7 @@
 #define MCERK_H
 
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -17,13 +18,13 @@ class MCERK : public MCER_Base {
 		Context *context;
 		CLS *cls;
 
-
 		/*solution details*/
 		vector<bool> used;
 		vector<bool> used_opt;
 		double wopt;
 		long long cnt_leaves = 0;
 		long long cnt_nodes = 0;
+
 		/**/
 
 
@@ -32,7 +33,7 @@ class MCERK : public MCER_Base {
 		void _f(int ej, int k);
 
 		/*upper-bound and cuts*/
-		vector<vector<double>> wrem;
+		vector<double> wrem;
 		double f_upper(int ej, bitset<Instance::mask_size> mask);
 };
 

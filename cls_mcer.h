@@ -20,6 +20,9 @@ private:
 	Instance instance;
 	int e3p_feasible = 0;
 	int e3p_unfeasible = 0;
+
+	set<tuple<int,int,int>> skip;
+
 };
 
 #endif

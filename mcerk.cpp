@@ -11,9 +11,7 @@ using namespace std;
 MCERK::MCERK(Context *ctx, CLS *cls_) : MCER_Base(ctx), context(ctx), cls(cls_){
 	used = vector<bool>(context->instance->m, false);
 	used_opt = vector<bool>(context->instance->m, false);
-	wrem = vector<vector<double>>(
-			context->instance->m,
-			vector<double>(context->instance->m+1, 0));
+	wrem = vector<double>(context->instance->m+1, 0);
 	wopt = -1e9;
 	cnt_leaves = 0;
 }
@@ -30,19 +28,6 @@ Solution MCERK::solve() {
 		cout << "CLS Size: " << i+1 << ": " << context->cls->get_cls(i).size()<<endl;
 	cout << endl;
 #endif
-
-	for (int i = 0; i<context->instance->m; i++) {
-		vector<double> w2 = vector<double>(context->instance->m-i, 0);
-
-		for (int j = i; j<context->instance->m; j++)
-			w2.push_back(context->cls->get_cls(i)[0].w - context->instance->wel[j]);
-		sort(w2.rbegin(), w2.rend());
-
-		wrem[i][0] = 0;
-
-		for (int j = 1; j<=context->instance->m-i; j++)
-			wrem[i][j] = wrem[i][j-1] + w2[j-1];
-	}
 
 	clock_t t1 = clock();
 
@@ -65,7 +50,7 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 	double ww = 0;
 
 	for (int j = ej; j<m; j++) if(used[j]) {
-		const vector<Cover<Instance::mask_size>> &cls_list = cls->get_cls(ej);
+		const vector<Cover<Instance::mask_size>> &cls_list = cls->get_cls(j);
 		double wbest = -1e9;
 		int ibest = 0;
 
@@ -74,8 +59,7 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 			double w = -context->instance->wel[j];
 
 			for (int i : cov.covl)
-				if (!mask[i])
-					w+=context->instance->wpnt[i];
+				w+=context->instance->wpnt[i] * (!mask[i]);
 
 			if (w > wbest){
 				wbest = w;
@@ -84,23 +68,31 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 		}
 
 		ww += wbest;
-		mask |= cls_list[ibest].mask;
+		//mask |= cls_list[ibest].mask;
 	}
 
 	return ww;
 }
 
 void MCERK::_f(int ej, int k) {
+	if (context->instance->m - ej < k) return;
+
 	if (ej == context->instance->m){
+
+		double lw = 0;
+		for (int j = context->instance->m-1; j>=0; j--)
+			if (used[j]) {
+				wrem[j] = cls->get_cls(j)[0].w + lw - context->instance->wel[j];
+				lw = wrem[j];
+			}
+
 		f(0, bitset<Instance::mask_size>(), 0);
 		return;
 	}
 
-	if (context->instance->m - ej < k) return;
-	if (k == 0){
-		_f(ej+1, k);
-		return;
-	}
+	_f(ej+1, k);
+	if (k == 0)	return;
+
 
 	used[ej] = true;
 	_f(ej+1, k-1);
@@ -138,7 +130,12 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 		return;
 	}
 
-	if (ej > 0 && wcurr + f_upper(ej, mask) - 1e-9 < wopt) return;
+	if (wcurr + wrem[ej] -1e-9 < wopt) return;
+	if (wcurr + f_upper(ej, mask) - 1e-9 < wopt) return;
+
+	//if (is_seen(ej, mask)) return;
+	//add_seen(ej, mask);
+
 	//if (wcurr + wrem[ej][k] <= wopt) return;
 
 	double elcost = context->instance->wel[ej];

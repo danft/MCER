@@ -1,6 +1,7 @@
 #include <vector>
 #include <set>
 #include <iostream>
+#include <unordered_set>
 
 using namespace std;
 
@@ -14,6 +15,9 @@ MCER_Base::MCER_Base(Context *context) : context(context) {
 	cov_cnt = vector<int>(context->instance->n, 0);
 	curr = vector<int>(context->instance->m, 0);
 	opt = vector<int>(context->instance->m, 0);
+	seen = vector<unordered_set<bitset<Instance::mask_size>>>(
+			context->instance->m,
+			unordered_set<bitset<Instance::mask_size>>());
 }
 
 MCER_Base::~MCER_Base(){
@@ -49,6 +53,22 @@ vector<int> MCER_Base::get_opt(){
 double MCER_Base::apply_cover(int el, int jcov) {
 	return apply_cover(el, jcov, 1);
 }
+
+bool MCER_Base::is_seen(int ej, bitset<Instance::mask_size> mask){
+	return seen[ej].count(mask)>0;
+}
+
+void MCER_Base::add_seen(int ej, bitset<Instance::mask_size> mask){
+	if (seen[ej].size() < 10000000){
+		seen[ej].insert(mask);
+	}
+}
+
+void MCER_Base::clear_seen(){
+	for (int i = 0; i<seen.size(); i++)
+		seen[i].clear();
+}
+
 
 bool MCER_Base::covers_any(bitset<Instance::mask_size> mask, const Cover<Instance::mask_size> &cov) {
 	return !((cov.mask | mask) == mask);
