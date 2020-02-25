@@ -14,8 +14,8 @@ int main(int argc, char *argv[]) {
 
 	auto instance = read_instance_from_file(cin);
 
-	Context context = Context(&instance, argc, argv);
 	CLS_MCE cls = CLS_MCE(instance);
+	Context context = Context(&instance, &cls, argc, argv);
 
 	MCERK mcerk = MCERK(&context, &cls);
 

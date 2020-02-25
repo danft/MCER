@@ -22,8 +22,8 @@ MCER_Base::~MCER_Base(){
 
 void MCER_Base::create_CLS(CLS* cls) {
 	clock_t t1 = clock();
-	auto covers = cls->create_cls();
-	context->set_covers(&covers);
+	cls->create_cls();
+	cls->remove_duplicates();
 	context->times.push_back(clock() - t1);
 
 	CLS_MCER *cls2 = dynamic_cast<CLS_MCER*>(cls);
@@ -60,9 +60,9 @@ double MCER_Base::apply_cover(int el, int jcov, int mul) {
 	int cmp = (mul>0) ? 0 : 1;
 	curr[el] = jcov;
 
-	for (int i = 0; i<context->cls_list[el][jcov].covl.size(); i++)
+	for (int i = 0; i<context->cls->get_cls(el)[jcov].covl.size(); i++)
 	{
-		int jpnt = context->cls_list[el][jcov].covl[i];
+		int jpnt = context->cls->get_cls(el)[jcov].covl[i];
 		wret += context->instance->wpnt[jpnt] * (cov_cnt[jpnt] == cmp);
 		cov_cnt[jpnt] += mul;
 	}

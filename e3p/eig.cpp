@@ -28,18 +28,21 @@ extern int zgeev_(
 
 int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_values) {
 
-	ccomplex *WORK, *RWORK, *w, *vl[1], *vr[1];
+	ccomplex WORK[20], RWORK[20], w[20];
+	ccomplex *vl[1], *vr[1];
+
 	char jobvl = 'N';
 	char jobvr = 'N';
 	int ok, n, lda, ldvl, ldvr, lwork;
 	int size = mat.size();
 	double AT[2 * size * size];
 
+
 	vl[0] = new ccomplex[size];
 	vr[0] = new ccomplex[size];
-	w = new ccomplex[size];
-	WORK = new ccomplex[size * 2];
-	RWORK = new ccomplex[size * 2];
+	//w = new ccomplex[size];
+	//WORK = new ccomplex[size * 2];
+	//RWORK = new ccomplex[size * 2];
 	n=size;
 	jobvl='N';
 	jobvr='N';
@@ -69,8 +72,8 @@ int eig(vector<vector<complex<double>>> &mat, vector<complex<double>> &eig_value
 
 	delete[] vl[0];
 	delete[] vr[0];
-	delete[] WORK;
-	delete[] RWORK;
+	//delete[] WORK;
+	//delete[] RWORK;
 
 	return !ok;
 }

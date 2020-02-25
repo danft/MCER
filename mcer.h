@@ -13,14 +13,14 @@ using namespace std;
 
 class MCER : public MCER_Base {
 	public:
-		MCER(Context *context);
+		MCER(Context *context, CLS *cls);
 		Solution solve();
 
 	private:
 		void _f(int el, bitset<Instance::mask_size> mask, double wcurr);
 
 		Context *context;
-
+		CLS *cls;
 		vector<double> wacc;
 		double wopt = 0;
 		long long cnt_leaves = 0;

@@ -14,17 +14,16 @@ using namespace std;
 class Context {
 	public:
 		const Instance *instance;
-		vector<vector<Cover<Instance::mask_size>>> cls_list;
+		CLS *cls;
 
-		Context(const Instance *instance, const vector<vector<Cover<Instance::mask_size>>> *covers);
-		Context(const Instance *instance);
+		//Context(const Instance *instance, CLS *cls);
+		Context(const Instance *instance, CLS *cls);
 
-		Context(const Instance *instance, int argc, char *argv[]);
-
-		void set_covers(const vector<vector<Cover<Instance::mask_size>>> *covs);
+		Context(const Instance *instance, CLS *cls, int argc, char *argv[]);
 
 		vector<clock_t> times;
 
+		//const vector<Cover<Instance::mask_size>>& get_cls(int ej);
 		bool print_table = false;
 		bool print_info = false;
 		bool print_list = false;

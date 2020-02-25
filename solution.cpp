@@ -23,8 +23,8 @@ Solution::Solution(Context *context, vector<int> opt, long long nleaves, long lo
 		e3p_unfeasible = context->e3p_unfeasible;
 
 		for (int i = 0; i<context->instance->m; i++) {
-			opt_cov[i] = context->cls_list[i][opt[i]];
-			cls_size[i] = context->cls_list[i].size();
+			opt_cov[i] = context->cls->get_cls(i)[opt[i]];
+			cls_size[i] = context->cls->get_cls(i).size();
 
 			if (used[i])
 				add_to_cover(opt_cov[i]);
@@ -178,7 +178,7 @@ string Solution::info() const{
 	for (int i = 0; i<instance.m; i++) if (used[i])
 	{
 		cnt++;
-		ss <<setprecision(17)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
+		ss <<setprecision(15)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
 	}
 
 	ss << endl;

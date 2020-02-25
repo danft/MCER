@@ -27,7 +27,7 @@ Solution MCERK::solve() {
 	cout << "CLS Construction Finished" << endl;
 
 	for (int i = 0; i<context->instance->m; i++)
-		cout << "CLS Size: " << i+1 << ": " << context->cls_list[i].size()<<endl;
+		cout << "CLS Size: " << i+1 << ": " << context->cls->get_cls(i).size()<<endl;
 	cout << endl;
 #endif
 
@@ -35,7 +35,7 @@ Solution MCERK::solve() {
 		vector<double> w2 = vector<double>(context->instance->m-i, 0);
 
 		for (int j = i; j<context->instance->m; j++)
-			w2.push_back(context->cls_list[i][0].w - context->instance->wel[j]);
+			w2.push_back(context->cls->get_cls(i)[0].w - context->instance->wel[j]);
 		sort(w2.rbegin(), w2.rend());
 
 		wrem[i][0] = 0;
@@ -65,7 +65,7 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 	double ww = 0;
 
 	for (int j = ej; j<m; j++) if(used[j]) {
-		vector<Cover<Instance::mask_size>> &cls_list = context->cls_list[j];
+		const vector<Cover<Instance::mask_size>> &cls_list = cls->get_cls(ej);
 		double wbest = -1e9;
 		int ibest = 0;
 
@@ -115,7 +115,7 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 	if (cnt_nodes % 100000000 == 0) {
 		cout << ej << " " << context->instance->m << " " << cnt_nodes << "----> " << wopt << endl;
 		if (ej < context->instance->m){
-			cout<< "CLS SIZE: " << context->cls_list[ej].size() << endl;
+			cout<< "CLS SIZE: " << context->cls->get_cls(ej).size() << endl;
 		}
 	}
 #endif
@@ -138,12 +138,12 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 		return;
 	}
 
-	if (ej > 0 && wcurr + f_upper(ej, mask) <= wopt) return;
+	if (ej > 0 && wcurr + f_upper(ej, mask) - 1e-9 < wopt) return;
 	//if (wcurr + wrem[ej][k] <= wopt) return;
 
 	double elcost = context->instance->wel[ej];
 
-	const vector<Cover<Instance::mask_size>> &cls = context->cls_list[ej];
+	const vector<Cover<Instance::mask_size>> &cls = context->cls->get_cls(ej);
 
 	for (int j = 0;j < cls.size(); j++) 
 		if (covers_any(mask, cls[j])) {

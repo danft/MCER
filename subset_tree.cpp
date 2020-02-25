@@ -7,6 +7,11 @@ using namespace std;
 
 Node::Node() {
 	ch = map<int, int>();
+	index = -1;
+}
+
+Node::Node(int in):Node(){
+	index=in;
 }
 
 
@@ -17,11 +22,14 @@ STree::STree(int n) : n(n) {
 	wh = vector<vector<int>>(n, vector<int>());	
 }
 
-void STree::add_nodes(const vector<int> &I) {
+void STree::add_nodes(const vector<int> &I, int index) {
 	int t = root;
 
+	int leave_index=-1;
+
 	for (int u : I) {
-		int nxt = nodes[t].ch[u];	
+
+		int nxt = nodes[t].ch[u];
 		if (nxt == 0) {
 			nxt = nodes.size();
 			Node nno = Node();
@@ -31,6 +39,20 @@ void STree::add_nodes(const vector<int> &I) {
 
 		nodes[t].ch[u] = nxt;
 		t = nxt;
+
+		if (nodes[t].ch.size() == 0 && leave_index==-1)
+			leave_index = nodes[t].index;
+	}
+
+	//is it a leaf?
+	if (nodes[t].ch.size() == 0) {
+		if (leave_index == -1){
+			leave_index = leaves.size();
+			leaves.push_back(index);
+		}
+
+		leaves[leave_index] = index;
+		nodes[t].index = leave_index;
 	}
 }
 

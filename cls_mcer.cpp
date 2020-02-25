@@ -27,12 +27,11 @@ bool check2(double a, double b, double x1, double x2, double x3, double y1, doub
 	return area - 1e-9 < acos(-1) * a * b;
 }
 
-CLS_MCER::CLS_MCER(Instance ins): instance(ins), CLS(ins.n){
+CLS_MCER::CLS_MCER(Instance ins): instance(ins), CLS(ins.n, ins.m){
 }
 
-vector<vector<Cover<Instance::mask_size>>> CLS_MCER::create_cls() {
+void CLS_MCER::create_cls() {
 
-	auto covs = vector<vector<Cover<Instance::mask_size>>>(instance.m);
 	int cnt_e3p = 0;
 	for (int l = 0; l<instance.m; ++l) {
 		reset();
@@ -45,10 +44,7 @@ vector<vector<Cover<Instance::mask_size>>> CLS_MCER::create_cls() {
 		for (int i = 0; i<instance.n; i++) {
 			auto cov = Cover<Instance::mask_size>(instance, l, instance.X[i], instance.Y[i], 0);
 
-			if (!is_covered(cov.covl)) {
-				c_tmp.push_back(cov);
-				add_cov(cov.covl);
-			}
+			add_cov(l, cov);
 
 			for (int j = i+1; j<instance.n; ++j) {
 				
@@ -59,10 +55,9 @@ vector<vector<Cover<Instance::mask_size>>> CLS_MCER::create_cls() {
 				for (int h = 0; h<sols.size(); h++) {
 					cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
-					if (!is_covered(cov.covl)) {
-						c_tmp.push_back(cov);
-						add_cov(cov.covl);
-					}
+					add_cov(l, cov);
+
+
 				}
 
 				for (int k = j+1; k < instance.n; ++k)
@@ -77,20 +72,12 @@ vector<vector<Cover<Instance::mask_size>>> CLS_MCER::create_cls() {
 					for (int h = 0; h < sols.size(); h++) {
 						cov = Cover<Instance::mask_size>(instance, l, sols[h].second.x, sols[h].second.y, sols[h].first);
 
-						if (!is_covered(cov.covl)) {
-							c_tmp.push_back(cov);
-							add_cov(cov.covl);
-						}
+						add_cov(l, cov);
 					}
 				}
 			}
 		}
-
-		covs[l] = remove_duplicates(c_tmp);
 	}
-
-	//cout << "Number of times E3P was called: " << cnt_e3p << endl;
-	return covs;
 }
 
 int CLS_MCER::get_e3p_feasible() const {

@@ -24,12 +24,10 @@ typedef std::numeric_limits<double> dbl;
 using namespace std;
 
 
-MCER::MCER(Context *context) : MCER_Base(context), context(context){
+MCER::MCER(Context *context, CLS *cls) : MCER_Base(context), context(context), cls(cls){
 	n = context->instance->n;
 	m = context->instance->m;
 	wacc = vector<double>(m+1, 0);
-	//seen = vector<set<bitset<100>>>(m);
-	//times = vector<clock_t>();
 	cnt_leaves = 0;
 }
 
@@ -60,11 +58,11 @@ void MCER::_f(int el, bitset<Instance::mask_size> mask, double wcurr) {
 
 	//const vector<Cover> &cls = context->cls_list[el];
 
-	for (int j = 0; j<context->cls_list[el].size(); j++) {
-		if (!covers_any(mask, context->cls_list[el][j])) continue;
+	for (int j = 0; j<context->cls->get_cls(el).size(); j++) {
+		if (!covers_any(mask, context->cls->get_cls(el)[j])) continue;
 
 		double wsum = apply_cover(el, j);
-		_f(el + 1, mask | context->cls_list[el][j].mask, wcurr + wsum);
+		_f(el + 1, mask | context->cls->get_cls(el)[j].mask, wcurr + wsum);
 		remove_cover(el, j);
 	}
 
@@ -72,12 +70,9 @@ void MCER::_f(int el, bitset<Instance::mask_size> mask, double wcurr) {
 }
 
 Solution MCER::solve() {
-	CLS_MCER cls_mcer = CLS_MCER(*(context->instance));
-	create_CLS(&cls_mcer);
-
 	// Specific cut.
 	for (int i = 0; i<m; i++) {
-		wacc[i+1] = wacc[i] + context->cls_list[i][0].w;
+		wacc[i+1] = wacc[i] + context->cls->get_cls(i)[0].w;
 	}
 
 	clock_t t1 = clock();

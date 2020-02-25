@@ -6,18 +6,13 @@
 
 using namespace std;
 
-Context::Context(const Instance *instance, const vector<vector<Cover<Instance::mask_size>>> *covers) : Context(instance) {
-	// copies the CLSs
-	this->cls_list = *covers;
-}
-
-Context::Context(const Instance *instance) {
+Context::Context(const Instance *instance, CLS *_cls) {
 	this->instance = instance;
-	this->cls_list = vector<vector<Cover<Instance::mask_size>>>();
+	this->cls = _cls;
 	times = vector<clock_t>();
 }
 
-Context::Context(const Instance *instance, int argc, char *argv[]) : Context(instance){
+Context::Context(const Instance *instance, CLS *_cls, int argc, char *argv[]) : Context(instance, _cls){
 	for (int i = 1; i<argc; ++i) {
 
 		if (strcmp(argv[i], "--print-table") == 0)
@@ -32,10 +27,4 @@ Context::Context(const Instance *instance, int argc, char *argv[]) : Context(ins
 
 	if (!print_table && !print_info && !print_list)
 		print_info = true;
-}
-
-
-void Context::set_covers(const vector<vector<Cover<Instance::mask_size>>> *covs) {
-	// copies the CLSs
-	this->cls_list = *covs;
 }

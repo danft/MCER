@@ -36,12 +36,12 @@ void Greedy::f() {
 
 		for (int ej = 0; ej < context->instance->m; ej++) if (!used[ej]) {
 
-			for (int j = 0; j<context->cls_list[ej].size(); j++) {
+			for (int j = 0; j<context->cls->get_cls(ej).size(); j++) {
 
 				double w = 0;
 
-				for (int h = 0; h < context->cls_list[ej][j].covl.size(); h++){
-					int jpnt = context->cls_list[ej][j].covl[h];
+				for (int h = 0; h < context->cls->get_cls(ej)[j].covl.size(); h++){
+					int jpnt = context->cls->get_cls(ej)[j].covl[h];
 
 					if (!is_cov(jpnt))
 						w += context->instance->wpnt[jpnt];

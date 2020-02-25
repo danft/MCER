@@ -12,9 +12,9 @@ int main(int argc, char *argv[]) {
 	//ifstream in("input/AB090.txt");
 	auto instance = read_instance_from_file(cin);
 
-	Context context = Context(&instance, argc, argv);
 
 	CLS_MCER cls = CLS_MCER(instance);
+	Context context = Context(&instance, &cls, argc, argv);
 	Greedy greedy = Greedy(&context, &cls);
 
 	solve(greedy, &context);
