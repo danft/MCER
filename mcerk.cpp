@@ -47,6 +47,12 @@ Solution MCERK::solve() {
 double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 	int m = context->instance->m;
 
+	//if (mseen[ej].count(mask)){
+	//	cnt_fupper_dp++;
+	//	return mseen[ej][mask];
+	//}
+
+	cnt_fupper++;
 	double ww = 0;
 
 	for (int j = ej; j<m; j++) if(used[j]) {
@@ -68,7 +74,6 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 		}
 
 		ww += wbest;
-		//mask |= cls_list[ibest].mask;
 	}
 
 	return ww;
@@ -80,11 +85,15 @@ void MCERK::_f(int ej, int k) {
 	if (ej == context->instance->m){
 
 		double lw = 0;
-		for (int j = context->instance->m-1; j>=0; j--)
+		for (int j = context->instance->m-1; j>=0; j--) {
+			//mseen[j].clear();
+			//dp[j].clear();
+
 			if (used[j]) {
 				wrem[j] = cls->get_cls(j)[0].w + lw - context->instance->wel[j];
 				lw = wrem[j];
 			}
+		}
 
 		f(0, bitset<Instance::mask_size>(), 0);
 		return;
@@ -104,11 +113,15 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 	cnt_nodes++;
 
 #ifdef DEBUG
-	if (cnt_nodes % 100000000 == 0) {
-		cout << ej << " " << context->instance->m << " " << cnt_nodes << "----> " << wopt << endl;
+	if (cnt_nodes % 1000000 == 0) {
+		cout << ej << " " << cnt_fupper << " " << cnt_nodes << ", " << cnt_leaves << "----> " << wopt << endl;
 		if (ej < context->instance->m){
 			cout<< "CLS SIZE: " << context->cls->get_cls(ej).size() << endl;
 		}
+
+		cout << "cnt_fupper_s: " << cnt_fupper_s << endl;
+		cout << "cnt_fupper_dp: " << cnt_fupper_dp << endl;
+		cout << "cnt_dp: " << cnt_dp << endl;
 	}
 #endif
 
@@ -130,16 +143,14 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 		return;
 	}
 
+
 	if (wcurr + wrem[ej] -1e-9 < wopt) return;
-	if (wcurr + f_upper(ej, mask) - 1e-9 < wopt) return;
-
-	//if (is_seen(ej, mask)) return;
-	//add_seen(ej, mask);
-
-	//if (wcurr + wrem[ej][k] <= wopt) return;
+	if (wcurr + f_upper(ej, mask) - 1e-9 < wopt){
+		cnt_fupper_s++;
+		return;
+	}
 
 	double elcost = context->instance->wel[ej];
-
 	const vector<Cover<Instance::mask_size>> &cls = context->cls->get_cls(ej);
 
 	for (int j = 0;j < cls.size(); j++) 
@@ -149,5 +160,7 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 			f(ej+1, mask | cls[j].mask, wcurr + w - elcost);
 			remove_cover(ej, j);
 		}
+
+	//dp[ej][mask] = 1;
 }
 

@@ -34,11 +34,11 @@ string Instance::info() const {
 	ss << "X = [";
 
 	for (int i = 0; i<X.size(); i++)
-		ss <<setprecision(15)<<fixed<< X[i] << elp[i+1==n];
+		ss <<setprecision(2)<<fixed<< X[i] << elp[i+1==n];
 
 	ss << "Y = [";
 	for (int i = 0; i<Y.size(); i++) 
-		ss <<setprecision(15)<<fixed<< Y[i] << elp[i+1==n];
+		ss <<setprecision(2)<<fixed<< Y[i] << elp[i+1==n];
 
 	ss << "wpnt = [";
 	for (int i = 0; i<Y.size(); i++) 

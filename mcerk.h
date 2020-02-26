@@ -24,7 +24,10 @@ class MCERK : public MCER_Base {
 		double wopt;
 		long long cnt_leaves = 0;
 		long long cnt_nodes = 0;
-
+		long long cnt_fupper = 0;
+		long long cnt_fupper_s = 0;
+		long long cnt_fupper_dp = 0;
+		long long cnt_dp = 0;
 		/**/
 
 
@@ -35,6 +38,10 @@ class MCERK : public MCER_Base {
 		/*upper-bound and cuts*/
 		vector<double> wrem;
 		double f_upper(int ej, bitset<Instance::mask_size> mask);
+
+		unordered_map<bitset<Instance::mask_size>, double> mseen[10];
+		unordered_map<bitset<Instance::mask_size>, double> dp[10];
+
 };
 
 #endif

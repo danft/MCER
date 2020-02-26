@@ -1,4 +1,4 @@
-CXXFLAGS=-llapack -O3 
+CXXFLAGS=-llapack -O3
 
 obj=subset_tree.o instance.o cover.o utils.o  solver_wrapper.o solution.o cls_mcer.o mcer_base.o context.o mcerk.o mcer.o greedy.o cls.o cls_mce.o
 

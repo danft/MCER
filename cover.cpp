@@ -21,7 +21,7 @@ Cover<N>::Cover(const Instance &ins, int ej, double xc, double yc, double theta)
 	mask = bitset<N>(0);
 	covl = vector<int>();
 	for (int i = 0; i<ins.n; i++) 
-		if (eval_ellipse(ins.a[ej], ins.b[ej], theta, xc, yc, ins.X[i], ins.Y[i]) -1e-9 < 1)
+		if (eval_ellipse(ins.a[ej], ins.b[ej], theta, xc, yc, ins.X[i], ins.Y[i]) -1e-15  < 1)
 		{
 			mask.set(i);
 			w += ins.wpnt[i];

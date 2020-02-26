@@ -2,6 +2,7 @@
 #define CLS_MCER_H
 
 #include <vector>
+#include <set>
 #include "cover.h"
 #include "cls.h"
 #include "instance.h"
@@ -21,7 +22,6 @@ private:
 	int e3p_feasible = 0;
 	int e3p_unfeasible = 0;
 
-	set<tuple<int,int,int>> skip;
 
 };
 
