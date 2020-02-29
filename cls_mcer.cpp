@@ -27,7 +27,7 @@ bool check2(double a, double b, double x1, double x2, double x3, double y1, doub
 	double area = triangle_area(p1, p2, p3);
 
 	return (area - 1e-9 < 3 * a * b * sqrt(3)/4);
-	//return area - 1e-9 < acos(-1) * a * b;
+	return area - 1e-9 < acos(-1) * a * b;
 }
 
 CLS_MCER::CLS_MCER(Instance ins): instance(ins), CLS(ins.n, ins.m){

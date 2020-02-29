@@ -59,14 +59,17 @@ def f(filenamebase, rng, cmd, outfilename):
 #f('AB{:03}', range(61, 121), 'mcerk', 'table_mcerk_ab_2.tex')
 #f('CM{:01}', range(1, 10), 'mcerk', 'table_mcerk_cm.tex')
 
-f('TA{:03}', range(1, 8), 'mcerk', 'table_mcerk_ta_1.tex')
-f('TA{:03}', range(1, 8), 'mce', 'table_mcek_ta_1.tex')
+#f('TA{:03}', range(1, 8), 'mcerk', 'table_mcerk_ta_1.tex')
+#f('TA{:03}', range(1, 8), 'mce', 'table_mcek_ta_1.tex')
 
 #f('TA{:03}', range(8, 17), 'mcerk', 'table_mcerk_ta_2.tex')
 #f('TA{:03}', range(8, 17), 'mce', 'table_mcek_ta_2.tex')
 
-f('TA{:03}', range(20, 23), 'mcerk', 'table_mcerk_ta_3.tex')
-f('TA{:03}', range(20, 23), 'mce', 'table_mcek_ta_3.tex')
+#f('TA{:03}', range(20, 23), 'mcerk', 'table_mcerk_ta_3.tex')
+#f('TA{:03}', range(20, 23), 'mce', 'table_mcek_ta_3.tex')
 
-f('TA{:03}', range(23, 38), 'mcerk', 'table_mcerk_ta_4.tex')
-f('TA{:03}', range(23, 38), 'mce', 'table_mcek_ta_4.tex')
+f('TA{:03}', range(38, 43), 'mcerk', 'table_mcerk_ta_6.tex')
+f('TA{:03}', range(38, 43), 'mce', 'table_mcek_ta_6.tex')
+
+#f('TA{:03}', range(43, 48), 'mcerk', 'table_mcerk_ta_5.tex')
+#f('TA{:03}', range(43, 48), 'mce', 'table_mcek_ta_5.tex')

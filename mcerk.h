@@ -29,15 +29,19 @@ class MCERK : public MCER_Base {
 		long long cnt_fupper_dp = 0;
 		long long cnt_dp = 0;
 		/**/
+		vector<pair<double, vector<int>>> combs;
 
 
 		/*backtracking functions*/
 		void f(int ej, bitset<Instance::mask_size> mask, double wcurr);
-		void _f(int ej, int k);
+		void generate_combs(int ej, int k);
+		void _f();
+
 
 		/*upper-bound and cuts*/
 		vector<double> wrem;
-		double f_upper(int ej, bitset<Instance::mask_size> mask);
+		double f_upper(int ej, bitset<Instance::mask_size> mask, bool gr);
+		//double f_upper2(int ej, bitset<Instance::mask_size> mask);
 
 		unordered_map<bitset<Instance::mask_size>, double> mseen[10];
 		unordered_map<bitset<Instance::mask_size>, double> dp[10];

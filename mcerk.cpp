@@ -31,7 +31,8 @@ Solution MCERK::solve() {
 
 	clock_t t1 = clock();
 
-	_f(0, context->instance->k);
+	generate_combs(0, context->instance->k);
+	_f();
 
 	context->times.push_back(clock() - t1);
 
@@ -44,7 +45,7 @@ Solution MCERK::solve() {
 }
 
 
-double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
+double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask, bool gr=false) {
 	int m = context->instance->m;
 
 	//if (mseen[ej].count(mask)){
@@ -54,6 +55,8 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 
 	cnt_fupper++;
 	double ww = 0;
+
+	vector<int> _opt;
 
 	for (int j = ej; j<m; j++) if(used[j]) {
 		const vector<Cover<Instance::mask_size>> &cls_list = cls->get_cls(j);
@@ -67,28 +70,48 @@ double MCERK::f_upper(int ej, bitset<Instance::mask_size>mask) {
 			for (int i : cov.covl)
 				w+=context->instance->wpnt[i] * (!mask[i]);
 
-			if (w > wbest){
-				wbest = w;
-				ibest = jj;
-			}
+			ibest = (w>wbest)?jj : ibest;
+			wbest = max(wbest, w);
+		}
+
+		if (gr) {
+			mask |= cls_list[ibest].mask;
+			_opt.push_back(ibest);
+			apply_cover(j, ibest);
 		}
 
 		ww += wbest;
 	}
 
+	if (gr){
+		int ic = 0;
+		cnt_leaves++;
+		if (ww > wopt) {
+
+			wopt = ww;
+			set_opt();
+			used_opt = used;
+		}
+
+		for (int j = ej; j<m; j++)
+			if(used[j])
+				remove_cover(j, _opt[ic++]);
+	}
+
 	return ww;
 }
 
-void MCERK::_f(int ej, int k) {
-	if (context->instance->m - ej < k) return;
+void MCERK::_f(){
+	sort(combs.rbegin(), combs.rend());
 
-	if (ej == context->instance->m){
+	for (int i = 0; i<combs.size(); i++) {
+		used = vector<bool>(context->instance->m,false);
+
+		for (int j = 0; j<combs[i].second.size(); j++)
+			used[combs[i].second[j]]=true;
 
 		double lw = 0;
 		for (int j = context->instance->m-1; j>=0; j--) {
-			//mseen[j].clear();
-			//dp[j].clear();
-
 			if (used[j]) {
 				wrem[j] = cls->get_cls(j)[0].w + lw - context->instance->wel[j];
 				lw = wrem[j];
@@ -96,15 +119,34 @@ void MCERK::_f(int ej, int k) {
 		}
 
 		f(0, bitset<Instance::mask_size>(), 0);
+	}
+}
+
+void MCERK::generate_combs(int ej, int k) {
+	if (context->instance->m - ej < k) return;
+
+
+	if (ej == context->instance->m){
+
+		vector<int> tmp;
+		for (int j = 0; j<context->instance->m; j++)
+			if(used[j])
+				tmp.push_back(j);
+
+		combs.push_back(
+				make_pair(
+						f_upper(0, bitset<Instance::mask_size>(), false), tmp));
+
+
 		return;
 	}
 
-	_f(ej+1, k);
+	generate_combs(ej+1, k);
 	if (k == 0)	return;
 
 
 	used[ej] = true;
-	_f(ej+1, k-1);
+	generate_combs(ej+1, k-1);
 	used[ej] = false;
 }
 
@@ -122,6 +164,7 @@ void MCERK::f(int ej, bitset<Instance::mask_size> mask, double wcurr) {
 		cout << "cnt_fupper_s: " << cnt_fupper_s << endl;
 		cout << "cnt_fupper_dp: " << cnt_fupper_dp << endl;
 		cout << "cnt_dp: " << cnt_dp << endl;
+		cout << "popcount: " << mask.count() << endl;
 	}
 #endif
 
