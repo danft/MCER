@@ -6,13 +6,13 @@
 
 using namespace std;
 
-Context::Context(const Instance *instance, CLS *_cls) {
+Context::Context(Instance *instance, CLS *_cls) {
 	this->instance = instance;
 	this->cls = _cls;
 	times = vector<clock_t>();
 }
 
-Context::Context(const Instance *instance, CLS *_cls, int argc, char *argv[]) : Context(instance, _cls){
+Context::Context(Instance *instance, CLS *_cls, int argc, char *argv[]) : Context(instance, _cls){
 	for (int i = 1; i<argc; ++i) {
 
 		if (strcmp(argv[i], "--print-table") == 0)
@@ -23,6 +23,12 @@ Context::Context(const Instance *instance, CLS *_cls, int argc, char *argv[]) : 
 
 		if (strcmp(argv[i], "--print-list") == 0)
 			print_list = true;
+
+		if (strcmp(argv[i], "--precision") == 0){
+			if (i+1 < argc)
+				precision = stoi(argv[i+1]);
+			instance->precision = precision;
+		}
 	}
 
 	if (!print_table && !print_info && !print_list)

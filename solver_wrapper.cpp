@@ -15,7 +15,7 @@ void solve(MCER_Base &solver, const Context *context) {
 	Solution sol = solver.solve();
 
 	if (context->print_info)
-		cout << sol.info() << endl;
+		cout << sol.info(context->precision) << endl;
 
 	if (context->print_table)
 		cout << sol.table() << endl;

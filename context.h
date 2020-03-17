@@ -13,13 +13,13 @@ using namespace std;
 
 class Context {
 	public:
-		const Instance *instance;
+		Instance *instance;
 		CLS *cls;
 
 		//Context(const Instance *instance, CLS *cls);
-		Context(const Instance *instance, CLS *cls);
+		Context(Instance *instance, CLS *cls);
 
-		Context(const Instance *instance, CLS *cls, int argc, char *argv[]);
+		Context(Instance *instance, CLS *cls, int argc, char *argv[]);
 
 		vector<clock_t> times;
 
@@ -27,6 +27,7 @@ class Context {
 		bool print_table = false;
 		bool print_info = false;
 		bool print_list = false;
+		int precision = 10;
 
 		int e3p_feasible = -1;
 		int e3p_unfeasible = -1;

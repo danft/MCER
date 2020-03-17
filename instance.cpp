@@ -21,11 +21,11 @@ string Instance::info() const {
 	ss << "a = [";
 
 	for (int i = 0; i<m; i++)
-		ss <<setprecision(5)<<fixed<< a[i] << elp[i+1==m];
+		ss <<setprecision(precision)<<fixed<< a[i] << elp[i+1==m];
 
 	ss << "b = [";
 	for (int i = 0; i<m; i++) 
-		ss <<setprecision(5)<<fixed<< b[i] << elp[i+1==m];
+		ss <<setprecision(precision)<<fixed<< b[i] << elp[i+1==m];
 
 	ss << "wel = [";
 	for (int i = 0; i<m; i++) 
@@ -34,11 +34,11 @@ string Instance::info() const {
 	ss << "X = [";
 
 	for (int i = 0; i<X.size(); i++)
-		ss <<setprecision(5)<<fixed<< X[i] << elp[i+1==n];
+		ss <<setprecision(precision)<<fixed<< X[i] << elp[i+1==n];
 
 	ss << "Y = [";
 	for (int i = 0; i<Y.size(); i++) 
-		ss <<setprecision(5)<<fixed<< Y[i] << elp[i+1==n];
+		ss <<setprecision(precision)<<fixed<< Y[i] << elp[i+1==n];
 
 	ss << "wpnt = [";
 	for (int i = 0; i<Y.size(); i++) 

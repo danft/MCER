@@ -127,14 +127,15 @@ string Solution::table() const{
 	return ss.str();
 }
 
-string Solution::info() const{
+string Solution::info(int precision=10) const{
 	ostringstream ss;	
-	ss << "Solution: \n";
 
-	ss << "Ellipses utilized: \n";
+	//ss << "Solution: \n";
 
-	int cnt = 0;
-	for (int i = 0; i<instance.m; i++)
+	//ss << "Ellipses utilized: \n";
+
+	//int cnt = 0;
+	/*for (int i = 0; i<instance.m; i++)
 		if (used[i]) {
 			cnt++;
 			ss << "E" << i+1 << ",\n"[cnt==instance.k];
@@ -165,7 +166,7 @@ string Solution::info() const{
 	}
 
 	ss << endl;
-	
+	*/
 	string elp[] = {", ", "]\n"};
 	ss << "used=[";
 	for (int i = 0; i<instance.m; i++)
@@ -173,12 +174,12 @@ string Solution::info() const{
 	ss <<endl;
 
 	ss << "sol=[";
-	cnt = 0;
+	int cnt = 0;
 
 	for (int i = 0; i<instance.m; i++) if (used[i])
 	{
 		cnt++;
-		ss <<setprecision(10)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
+		ss <<setprecision(precision)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
 	}
 
 	ss << endl;

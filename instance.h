@@ -10,6 +10,7 @@ using namespace std;
 struct Instance {
 	vector<double> a, b, wel, wpnt;
 	vector<double> X, Y;
+	int precision=10;
 	int n, m, k;
 	const static size_t mask_size = 700;
 

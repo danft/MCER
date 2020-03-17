@@ -12,7 +12,7 @@ using namespace std;
 class Solution {
 	public:
 	
-	string info() const;
+	string info(int precision) const;
 	string table() const;
 	string list() const;
 
