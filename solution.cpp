@@ -167,22 +167,22 @@ string Solution::info(int precision=10) const{
 
 	ss << endl;
 	*/
-	string elp[] = {", ", "]\n"};
-	ss << "used=[";
+	string elp[] = {", ", "\n"};
+	//ss << "used=[";
 	for (int i = 0; i<instance.m; i++)
 		ss << used[i] << elp[i+1==instance.m];
-	ss <<endl;
+	//ss <<endl;
 
-	ss << "sol=[";
+	//ss << "sol=[";
 	int cnt = 0;
 
 	for (int i = 0; i<instance.m; i++) if (used[i])
 	{
 		cnt++;
-		ss <<setprecision(precision)<<fixed<< "(" << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << ")" << elp[cnt==instance.k];
+		ss <<setprecision(precision)<<fixed << opt_cov[i].xc << ", " << opt_cov[i].yc << ", " << opt_cov[i].theta << elp[cnt==instance.k];
 	}
 
-	ss << endl;
+	//ss << endl;
 
 	return ss.str();
 }

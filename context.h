@@ -27,6 +27,7 @@ class Context {
 		bool print_table = false;
 		bool print_info = false;
 		bool print_list = false;
+		bool print_solution = false;
 		int precision = 10;
 
 		int e3p_feasible = -1;

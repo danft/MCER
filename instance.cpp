@@ -14,37 +14,37 @@ string Instance::info() const {
 
  	ostringstream ss;	
 
-	ss << "Instance: n=" << n << ", m=" << m << ", k=" << k << endl;
+	ss << n << " " << m << " " << k << endl;
 
-	string elp[] = {", ", "]\n"};
+	string elp[] = {", ", "\n"};
 
-	ss << "a = [";
+	//ss << "a = [";
 
 	for (int i = 0; i<m; i++)
 		ss <<setprecision(precision)<<fixed<< a[i] << elp[i+1==m];
 
-	ss << "b = [";
+	//ss << "b = [";
 	for (int i = 0; i<m; i++) 
 		ss <<setprecision(precision)<<fixed<< b[i] << elp[i+1==m];
 
-	ss << "wel = [";
+	//ss << "wel = [";
 	for (int i = 0; i<m; i++) 
 		ss << wel[i] << elp[i+1==m];
 
-	ss << "X = [";
+	//ss << "X = [";
 
 	for (int i = 0; i<X.size(); i++)
 		ss <<setprecision(precision)<<fixed<< X[i] << elp[i+1==n];
 
-	ss << "Y = [";
+	//ss << "Y = [";
 	for (int i = 0; i<Y.size(); i++) 
 		ss <<setprecision(precision)<<fixed<< Y[i] << elp[i+1==n];
 
-	ss << "wpnt = [";
+	//ss << "wpnt = [";
 	for (int i = 0; i<Y.size(); i++) 
 		ss << wpnt[i] << elp[i+1==n];
 
-	ss << endl;
+	//ss << endl;
 
 	return ss.str();
 }

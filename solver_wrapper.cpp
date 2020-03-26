@@ -10,7 +10,7 @@ using namespace std;
 
 void solve(MCER_Base &solver, const Context *context) {
 	if (context->print_info)
-		cout << context->instance->info() << endl;
+		cout << context->instance->info() ;//<< endl;
 
 	Solution sol = solver.solve();
 
