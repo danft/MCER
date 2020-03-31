@@ -1,6 +1,7 @@
 import os
 from parser import *
 import signal
+import subprocess
 
 def handler(signum, frame):
 	print("timeout")
@@ -12,15 +13,22 @@ def f(filenamebase, rng, cmd):
 	for i in rng:
 		filename = filenamebase.format(i)
 
-		signal.signal(signal.SIGALRM, handler)
-		signal.alarm(7200)
+		if os.path.exists('output/' + cmd + '-' + filename + '.txt'):
+			continue
+
+		#signal.signal(signal.SIGALRM, handler)
+		#signal.alarm(10)
 
 		sol=[]
 		
+		
 		try:
-			os.popen('./' + cmd + '< input/' + filename + '.txt --print-info --precision 17 > output/'+ cmd + '-' + filename + '.txt')
+			proc = subprocess.Popen('./' + cmd + '< input/' + filename + '.txt --print-info --precision 17 > output/'+ cmd + '-' + filename + '.txt', shell=True, preexec_fn=os.setsid)
+			proc.wait(7200)
 
-		except Exception:
+		except subprocess.TimeoutExpired:
+			os.remove('output/' + cmd + '-' + filename + '.txt')
+			os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
 			print (filename + "TIMED OUT")
 
 		signal.alarm(0)
